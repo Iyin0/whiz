@@ -1,0 +1,10 @@
+#!/bin/sh
+# This script checks if there are any changes in the current branch compared to the origin.
+# If changes are detected, it pulls the latest changes and reinstalls packages using pnpm.
+
+if git fetch origin $(git branch --show-current) && ! git diff --quiet HEAD origin/$(git branch --show-current); then
+  git pull
+fi
+
+# Reinstall packages using pnpm
+pnpm install
