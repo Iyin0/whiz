@@ -1,14 +1,10 @@
-'use client';
-
-import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import Newsletter from '@/components/layout/newsletter';
 import GetInvolved from '@/components/layout/get-involved';
 import Faqs from '@/components/layout/faqs';
+import Link from 'next/link';
 
 export default function Home() {
-  const router = useRouter();
 
   return (
     <div className="">
@@ -16,14 +12,17 @@ export default function Home() {
         <div className="h-full w-full gap-8 px-4 sm:px-10 lg:px-20 flex flex-col justify-center bg-gradient-to-r from-black/80 to-black/60 sm:to-transparent">
           <h1 className="text-white text-4xl sm:text-5xl lg:text-[64px] font-bold max-w-[728px] leading-[60px] sm:leading-[75px]">Empowering Rural Communities Through Digital Literacy</h1>
           <div className="flex gap-4">
-            <Button 
-              onClick={() => router.push('/contact#volunteer')}
-              variant="outline"
-              className="text-white border-white border border-border bg-transparent"
-            >
+            <Link 
+              href="/contact#volunteer"
+              className="text-white border-white border border-border bg-transparent py-2 px-5 rounded-md text-sm"            >
               Join Us
-            </Button>
-            <Button onClick={() => router.push('/contact#donate')}>Donate</Button>
+            </Link>
+            <Link 
+              href="/contact#donate"
+              className="text-white border-primary border bg-primary py-2 px-5 rounded-md text-sm"
+            >
+              Donate
+            </Link>
           </div>
         </div>
       </div>
@@ -34,7 +33,7 @@ export default function Home() {
             Bridging the digital and technological gap between rural and urban communities by enlightening, educating and empowering rural communities with digital and technical knowledge and skills.
           </p>
         </div>
-        <Image src="/images/MissionLogo.png" alt="Mission Statement" width={497} height={331} className="hidden sm:block" />
+        <Image src="/images/MissionLogo.png" alt="Mission Statement" loading="lazy" width={497} height={331} className="hidden sm:block" />
       </div>
       <div className="bg-cover bg-center bg-[url('/images/EnlightenImage.png')]">
         <div className="bg-[#00403A] opacity-85 w-full h-full py-20 sm:py-20 px-4 sm:px-10 lg:px-20 flex justify-center items-center">
@@ -48,32 +47,30 @@ export default function Home() {
             <p className="text-xl text-center max-w-[750px]">
               Over 300 students from 15 schools in Offa, Kwara State, have participated in our Digital Literacy Workshop, equipping them with essential technology knowledge and skills for the future.
             </p>
-            <Button
-              variant="outline"
-              className="text-white border-secondary border bg-transparent hover:bg-secondary hover:text-white"
-              onClick={() => router.push('/projects')}
+            <Link
+              href="/projects"
+              className="text-white border-secondary border bg-transparent hover:bg-secondary hover:text-white py-2 px-5 rounded-md text-sm"
             >
               Our Programs
-            </Button>
+            </Link>
           </div>
         </div>
       </div>
       <div className="flex items-end justify-center pb-11 pt-24 sm:pt-44 px-4">
         <div className="flex justify-between gap-10">
-        <Image src="/images/JoinImage.png" alt="Enlighten" width={706} height={468} className="rounded-[50px] hidden sm:block" />
+        <Image src="/images/JoinImage.png" alt="Enlighten" loading="lazy" width={706} height={468} className="rounded-[50px] hidden sm:block" />
         <div className="flex flex-col max-w-[515px]">
           <h2 className="text-2xl font-bold pb-2 pr-10 border-b border-secondary w-fit">Join Us and Make A Difference</h2>
           <p className="text-lg text-primary italic font-semibold py-4">Be a catalyst for change!</p>
           <p className="text-base">Are you passionate about education and technology? Do you want to help rural communities in Nigeria gain essential digital skills? Join Whiz Academy as a volunteer!</p>
           <p className="text-base italic font-medium mt-2 mb-8">impactful work, hands-on experience, community impact.</p>
           <div className="flex justify-center sm:justify-start">
-            <Button 
-              variant="outline" 
-              className="border-black border-2 bg-transparent rounded-lg w-fit"
-              onClick={() => router.push('/contact#volunteer')}
+            <Link
+              href="/contact#volunteer"
+              className="border-black border-2 bg-transparent rounded-lg w-fit py-1.5 px-3 text-sm"
             >
               Join Us
-            </Button>
+            </Link>
           </div>
         </div>
         </div>
