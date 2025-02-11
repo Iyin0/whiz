@@ -30,8 +30,8 @@ export default function Newsletter() {
   }
 
   return (
-    <div className="flex min-h-[311px] items-center justify-center gap-20 px-[160px]">
-      <h2 className="text-5xl font-medium max-w-[481px]">Stay updated with our newsletter</h2>
+    <div className="flex flex-col sm:flex-row  items-center justify-center gap-10 sm:gap-20 px-4 py-10 sm:py-24 sm:px-[160px]">
+      <h2 className="text-3xl text-center sm:text-left sm:text-5xl font-medium max-w-[481px]">Stay updated with our newsletter</h2>
       <div className="flex flex-col grow max-w-[549px]">
         <p className="text-sm">Get the latest updates and news from Whiz Academy.</p>
         <Form {...form}>

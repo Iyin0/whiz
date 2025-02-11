@@ -101,7 +101,7 @@ export default {
   			}
   		},
   		animation: {
-  			'slide-up': 'slide-up 15s infinite',
+  			'slide-up': 'slide-up 10s infinite',
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
   		}

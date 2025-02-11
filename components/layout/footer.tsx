@@ -91,9 +91,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gradient-to-t from-[#737373]/50 to-transparent min-h-[600px] px-20 flex flex-col justify-end">
-      <div className="flex flex-col justify-end">
-        <div className="flex justify-between gap-8 items-end">
+    <footer className="bg-gradient-to-t from-[#737373]/50 to-transparent min-h-[600px] px-4 sm:px-20 flex flex-col justify-end">
+      <div className="flex flex-col sm:justify-end">
+        <div className="flex flex-col sm:flex-row justify-between gap-12 sm:gap-8 sm:items-end">
           <div className="flex flex-col gap-8">
             <Link href="/">
               <Image src="/images/NavLogo.png" alt="Whiz Academy" width={131} height={76} />
@@ -110,17 +110,17 @@ export default function Footer() {
           <div className="flex gap-20">
             <div className="flex flex-col gap-4">
               {firstColumn.map((item) => (
-                <Link key={item.title} href={item.link} className="text-end">{item.title}</Link>
+                <Link key={item.title} href={item.link} className="sm:text-end">{item.title}</Link>
               ))}
             </div>
             <div className="flex flex-col gap-4">
               {secondColumn.map((item) => (
-                <Link key={item.title} href={item.link} className="text-end">{item.title}</Link>
+                <Link key={item.title} href={item.link} className="sm:text-end">{item.title}</Link>
               ))}
             </div>
           </div>
        </div>
-       <div className="flex gap-4 mt-16 mb-11">
+       <div className="flex justify-around sm:justify-start gap-4 mt-16 mb-11">
           {socials.map((social) => (
             <Link key={social.title} href={social.value} target="_blank" rel="noopener noreferrer">
               <social.icon className="text-2xl" />

@@ -29,7 +29,7 @@ export default function Faqs() {
     <div className="bg-[url('/images/FaqImage.png')] bg-cover bg-center bg-no-repeat min-h-[977px]" id="faqs">
       <div className="h-full min-h-[977px] w-full bg-secondary/80 flex justify-center items-center">
         <div className="w-[90%] h-[90%] bg-white/80 flex flex-col items-center py-12 px-4">
-          <h2 className="text-5xl font-medium">FAQs</h2>
+          <h2 className="text-4xl sm:text-5xl font-medium">FAQs</h2>
           <p className="text-center mt-4 mb-10">Find answers to common questions about Whiz Academy, getting involved and the sponsorship process.</p>
           <Accordion type="single" collapsible className="w-full max-w-[790px] space-y-6">
             {list.map((item) => (
