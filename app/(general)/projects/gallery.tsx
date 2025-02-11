@@ -24,17 +24,22 @@ export default async function Gallery() {
   return (
     <div className="mt-10">
       <div className="grid grid-cols-2 sm:grid-cols-6 gap-5">
-        {images.slice(0, 12).map((image) => (
-          <div key={image.id}>
-            <Image
-              src={image.webContentLink ?? ''}
-              alt={`${image.id}`}
-              width={196}
-              height={200}
-              className="rounded-lg w-[196px] h-[200px]"
-            />
-          </div>
-        ))}
+        {images
+          .filter((image) => image.webContentLink !== null && image.webContentLink !== undefined)
+          .slice(0, 12)
+          .map((image) => (
+            <div key={image.id}>
+              <Image
+                src={image.webContentLink ?? image.url}
+                alt={`${image.name}`}
+                width={196}
+                height={200}
+                className="rounded-lg w-[196px] h-[200px]"
+                loading="lazy"
+              />
+            </div>
+          ))
+        }
       </div>
     </div>
   );
