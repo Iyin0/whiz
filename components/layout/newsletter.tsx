@@ -12,12 +12,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 const formSchema = z.object({
   email: z.string().email(),
 });
 
 export default function Newsletter() {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -25,8 +28,27 @@ export default function Newsletter() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/newsletter', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: { 'Content-Type': 'application/json' },
+      });
+    
+      if (response.ok) {
+        toast.success('You have been subscribed to our newsletter!');
+        form.reset();
+      } else {
+        throw new Error('Failed to subscribe. Please try again.');
+      }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -35,22 +57,26 @@ export default function Newsletter() {
       <div className="flex flex-col grow max-w-[549px]">
         <p className="text-sm">Get the latest updates and news from Whiz Academy.</p>
         <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 mb-6 flex items-center gap-4 w-full">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input placeholder="Enter your email" {...field} className="rounded-md w-full h-12"/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" variant="outline" className="bg-white text-black/50 border border-black/50">Subscribe</Button>
-        </form>
-      </Form>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 mb-6 flex items-center gap-4 w-full">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input placeholder="Enter your email" {...field} className="rounded-md w-full h-12"/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" variant="outline" className="bg-white text-black/50 border border-black/50"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Submitting...' : 'Subscribe'}
+            </Button>
+          </form>
+        </Form>
         <p className="text-sm">By clicking Sign Up, you agree to our Terms and Conditions.</p>
       </div>
     </div>
