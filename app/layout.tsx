@@ -13,7 +13,7 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: 'Whiz Academy',
   description:
-    'Whiz Academy: Empowering Rural Communities Through Digital Literacy',
+    'Empowering Rural Communities Through Digital Literacy',
 };
 
 export default function RootLayout({

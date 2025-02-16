@@ -1,4 +1,6 @@
 import { Resend } from 'resend';
+import { render } from '@react-email/components';
+import DonationFormEmail from '@/emails/donation-form';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -6,15 +8,13 @@ export async function POST(req: Request) {
     try {
         const { firstName, lastName, email, phone, donation } = await req.json();
 
+        const emailHtml = await render(DonationFormEmail({ firstName, lastName, email, phone, donation }));
+
         const response = await resend.emails.send({
             from: 'support@whizacademy.org',
             to: 'whizacademy4all@gmail.com',
             subject: 'New Donation Form Submission',
-            html: `<p><strong>First Name:</strong> ${firstName}</p>
-                   <p><strong>Last Name:</strong> ${lastName}</p>
-                   <p><strong>Email:</strong> ${email}</p>
-                   <p><strong>Phone:</strong> ${phone}</p>
-                   <p><strong>Donation:</strong> ${donation.join(', ')}</p>`,
+            html: emailHtml,
         });
 
         if (response.error) {
