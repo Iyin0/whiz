@@ -6,16 +6,17 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-interface Image {
-  id: string | null | undefined;
+export type ImageType = {
+  id: string;
+  name?: string | null;
+  mimeType?: string | null;
   url: string;
-  name: string | null | undefined;
-  mimeType: string | null | undefined;
-  webViewLink: string | null | undefined;
-  webContentLink: string | null | undefined;
-}
+  webViewLink?: string | null;
+  webContentLink?: string | null;
+  thumbnailLink?: string | null;
+};
 
-export default function ImageView({images}: {images: Image[]}) {
+export default function ImageView({images}: {images: ImageType[]}) {
   const [count, setCount] = useState(12);
 
   if (images.length === 0) {
