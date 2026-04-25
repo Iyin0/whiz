@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic';
 import ImageView from './image-view';
 import { fetchDriveImages } from '@/lib/googleDrive';
 
