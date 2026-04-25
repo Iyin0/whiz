@@ -15,7 +15,7 @@ const eslintConfig = [
     rules: {
       // "prettier/prettier": "error",
       semi: ['error'],
-      quotes: ['error', 'single'],
+      // quotes: ['error', 'single'],
       // 'unused-imports/no-unused-imports': 'warn',
       'no-unused-vars': 'warn',
       'no-console': 'warn',
