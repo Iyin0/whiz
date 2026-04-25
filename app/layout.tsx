@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 
@@ -28,7 +27,6 @@ export default function RootLayout({
       >
         {children}
         <Toaster richColors />
-        <Analytics />
       </body>
     </html>
   );
