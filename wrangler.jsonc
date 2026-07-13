@@ -19,6 +19,18 @@
     {
       "pattern": "careers.whizacademy.org",
       "custom_domain": true
+    },
+    {
+      "pattern": "simefoundation.org",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.simefoundation.org",
+      "custom_domain": true
+    },
+    {
+      "pattern": "whiz.simefoundation.org",
+      "custom_domain": true
     }
   ],
   "assets": {
