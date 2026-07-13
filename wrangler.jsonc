@@ -2,22 +2,23 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
   "name": "whiz",
+  "workers_dev": false,
   "compatibility_date": "2026-04-25",
   "compatibility_flags": [
     "nodejs_compat"
   ],
   "routes": [
     {
-      "pattern": "whizacademy.org/*",
-      "zone_name": "whizacademy.org"
+      "pattern": "whizacademy.org",
+      "custom_domain": true
     },
     {
-      "pattern": "www.whizacademy.org/*",
-      "zone_name": "whizacademy.org"
+      "pattern": "www.whizacademy.org",
+      "custom_domain": true
     },
     {
-      "pattern": "careers.whizacademy.org/*",
-      "zone_name": "whizacademy.org"
+      "pattern": "careers.whizacademy.org",
+      "custom_domain": true
     }
   ],
   "assets": {

@@ -44,6 +44,8 @@ type ApplicationFormProps = {
 };
 
 const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).length;
+const minStatementWords = 50;
+const maxStatementWords = 300;
 
 function buildApplicationSchema(postings: ApplicationPosting[]) {
   const cvRequiredPostingIds = postings
@@ -73,9 +75,9 @@ function buildApplicationSchema(postings: ApplicationPosting[]) {
     statement: z.string().refine((value) => {
       const words = wordCount(value);
 
-      return words >= 200 && words <= 500;
+      return words >= minStatementWords && words <= maxStatementWords;
     }, {
-      message: 'Statement must be between 200 and 500 words',
+      message: `Statement must be between ${minStatementWords} and ${maxStatementWords} words`,
     }),
     cvUrl: z.string().url({ message: 'Enter a valid CV or resume link' }).optional().or(z.literal('')),
     portfolioUrl: z.string().url({ message: 'Enter a valid portfolio link' }).optional().or(z.literal('')),
@@ -395,7 +397,7 @@ export default function ApplicationForm({
             <FormItem>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>Statement</FormLabel>
-                <span className="text-xs text-muted-foreground">{statementWords}/500 words</span>
+                <span className="text-xs text-muted-foreground">{statementWords}/{maxStatementWords} words</span>
               </div>
               <FormControl>
                 <Textarea

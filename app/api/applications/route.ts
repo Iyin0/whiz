@@ -7,6 +7,8 @@ import ApplicationFormEmail from '@/emails/application-form';
 import { careerMeta, careerRoles } from '@/lib/careers';
 
 const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).length;
+const minStatementWords = 50;
+const maxStatementWords = 300;
 
 const applicationSchema = z.object({
   roleId: z.string().min(1),
@@ -21,7 +23,7 @@ const applicationSchema = z.object({
   statement: z.string().refine((value) => {
     const words = wordCount(value);
 
-    return words >= 200 && words <= 500;
+    return words >= minStatementWords && words <= maxStatementWords;
   }),
   cvUrl: z.string().url().optional().or(z.literal('')),
   portfolioUrl: z.string().url().optional().or(z.literal('')),
