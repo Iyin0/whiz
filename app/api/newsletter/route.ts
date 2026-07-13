@@ -12,13 +12,22 @@ export async function POST(req: Request) {
             );
         }
 
+        const audienceId = process.env.RESEND_AUDIENCE_ID;
+
+        if (!audienceId) {
+            return NextResponse.json(
+            { error: 'Newsletter service is not configured. RESEND_AUDIENCE_ID is missing.' },
+            { status: 500 }
+            );
+        }
+
         const resend = new Resend(apiKey);
         const { email } = await req.json();
 
         const response = await resend.contacts.create({
             email,
             unsubscribed: false,
-            audienceId: process.env.RESEND_AUDIENCE_ID as string,
+            audienceId,
         });
 
         if (response.error) {

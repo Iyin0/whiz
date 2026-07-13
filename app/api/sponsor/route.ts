@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         const emailHtml = await render(SponsorFormEmail({ firstName, lastName, email, phone, orgName }));
 
         const response = await resend.emails.send({
-            from: 'support@simefoundation.org',
+            from: 'support@whizacademy.org',
             to: 'whizacademy4all@gmail.com',
             subject: 'New Sponsorship Form Submission',
             html: emailHtml,

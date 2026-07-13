@@ -82,18 +82,18 @@ export default function DonationForm() {
   const donationOptions = ['Money', 'Items', 'Others'];
 
   return (
-    <div className="flex flex-col px-4 pb-4 sm:px-20 gap-8" id="donate">
-      <p>Kindly fill the form below and we will reach out to you</p>
+    <div className="flex flex-col gap-6 pb-6">
+      <p className="text-sm text-muted-foreground">Share your details and we will follow up on the best way to receive and steward your donation.</p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-[600px]">
-          <div className="flex gap-4 w-fit">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full max-w-3xl gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input placeholder="First Name" {...field} className="rounded-md w-full h-12 max-w-[200px]"/>
+                    <Input placeholder="First Name" {...field} className="h-12 rounded-md bg-white"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,7 +105,7 @@ export default function DonationForm() {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input placeholder="Last Name" {...field} className="rounded-md w-full h-12 max-w-[200px]"/>
+                    <Input placeholder="Last Name" {...field} className="h-12 rounded-md bg-white"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -118,7 +118,7 @@ export default function DonationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <div className="flex gap-4">
+                  <div className="flex flex-wrap gap-4">
                     {donationOptions.map((option) => (
                       <div key={option} className="flex items-center gap-2">
                         <Checkbox 
@@ -130,7 +130,7 @@ export default function DonationForm() {
                               : [...field.value, option]);
                           }}
                         />
-                        <Label htmlFor={option} className="text-black/50">{option}</Label>
+                        <Label htmlFor={option} className="text-muted-foreground">{option}</Label>
                       </div>
                     ))}
                   </div>
@@ -145,7 +145,7 @@ export default function DonationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input placeholder="Email Address" {...field} className="rounded-md w-full h-12 max-w-[250px]"/>
+                  <Input placeholder="Email Address" {...field} className="h-12 rounded-md bg-white"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -157,9 +157,9 @@ export default function DonationForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input placeholder="Phone Number" {...field} className="rounded-md w-full h-12 max-w-[280px]"/>
+                  <Input placeholder="Phone Number" {...field} className="h-12 rounded-md bg-white"/>
                 </FormControl>
-                <FormLabel className="text-xs text-gray-500">Include the country code (e.g. +23458765673687)</FormLabel>
+                <FormLabel className="text-xs text-muted-foreground">Include the country code (e.g. +447587873007)</FormLabel>
                 <FormMessage />
               </FormItem>
             )}
@@ -167,7 +167,7 @@ export default function DonationForm() {
           <Button 
             type="submit" 
             variant="outline" 
-            className="bg-white text-black/80 border border-black/50 w-fit py-3 px-5"
+            className="h-11 w-fit rounded-md bg-primary px-5 text-white hover:bg-primary/90"
             disabled={isLoading}
           >
             {isLoading ? 'Submitting...' : 'Donate'}

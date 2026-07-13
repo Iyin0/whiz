@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { ArrowRight, Mail } from 'lucide-react';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -52,33 +53,54 @@ export default function Newsletter() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20 px-4 py-10 sm:py-24 sm:px-[160px]" id="newsletter">
-      <h2 className="text-3xl text-center sm:text-left sm:text-5xl font-medium max-w-[481px]">Stay updated with our newsletter</h2>
-      <div className="flex flex-col grow max-w-[549px]">
-        <p className="text-sm">Get the latest updates and news from Whiz Academy.</p>
+    <section className="bg-background px-4 py-14 sm:px-8 sm:py-20 lg:px-10" id="newsletter">
+      <div className="mx-auto grid max-w-7xl gap-8 rounded-lg bg-[#102f2a] p-6 text-white shadow-xl sm:p-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div>
+        <div className="flex h-11 w-11 items-center justify-center rounded-md bg-white/10 text-secondary">
+          <Mail className="h-5 w-5" />
+        </div>
+        <h2 className="mt-5 max-w-xl text-3xl font-bold sm:text-4xl">
+          Follow the field work.
+        </h2>
+        <p className="mt-3 max-w-xl text-sm leading-6 text-white/70">
+          Receive notes from the communities, cohorts, and partners helping Whiz Academy
+          expand digital access from the ground up.
+        </p>
+      </div>
+      <div className="flex flex-col">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 mb-6 flex items-center gap-4 w-full">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3 sm:flex-row">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input placeholder="Enter your email" {...field} className="rounded-md w-full h-12"/>
+                    <Input
+                      placeholder="Enter your email"
+                      {...field}
+                      className="h-12 w-full rounded-md border-white/20 bg-white text-foreground placeholder:text-muted-foreground"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" variant="outline" className="bg-white text-black/50 border border-black/50"
+            <Button
+              type="submit"
+              className="h-12 rounded-md bg-secondary px-5 font-semibold text-secondary-foreground hover:bg-secondary/90"
               disabled={isLoading}
             >
               {isLoading ? 'Submitting...' : 'Subscribe'}
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </form>
         </Form>
-        <p className="text-sm">By clicking Sign Up, you agree to our Terms and Conditions.</p>
+        <p className="mt-3 text-xs leading-5 text-white/60">
+          Occasional updates only, focused on program progress and ways to support the work.
+        </p>
       </div>
-    </div>
+      </div>
+    </section>
   );
 }

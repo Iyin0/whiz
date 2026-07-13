@@ -1,18 +1,18 @@
 import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 
-const roboto = Roboto({
-  variable: '--font-roboto',
+const inter = Inter({
+  variable: '--font-sans',
   subsets: ['latin'],
-  weight: ['400', '500', '700'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 export const metadata: Metadata = {
   title: 'Whiz Academy',
   description:
-    'Empowering Rural Communities Through Digital Literacy',
+    'Community-led digital literacy for rural African communities',
 };
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.className} antialiased`}
+        className={`${inter.className} antialiased`}
       >
         {children}
         <Toaster richColors />

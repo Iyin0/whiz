@@ -6,6 +6,20 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "routes": [
+    {
+      "pattern": "whizacademy.org/*",
+      "zone_name": "whizacademy.org"
+    },
+    {
+      "pattern": "www.whizacademy.org/*",
+      "zone_name": "whizacademy.org"
+    },
+    {
+      "pattern": "careers.whizacademy.org/*",
+      "zone_name": "whizacademy.org"
+    }
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"

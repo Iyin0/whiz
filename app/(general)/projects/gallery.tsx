@@ -50,15 +50,15 @@ export default function GalleryClient() {
   }, []);
 
   if (isLoading) {
-    return <p className="mt-10 px-4">Loading gallery...</p>;
+    return <p className="mt-10 text-sm text-muted-foreground">Loading gallery...</p>;
   }
 
   if (error) {
-    return <p className="mt-10 px-4">Gallery could not be loaded right now.</p>;
+    return <p className="mt-10 text-sm text-muted-foreground">Gallery could not be loaded right now.</p>;
   }
 
   return (
-    <div className="mt-10">
+    <div>
       <ImageView images={images} />
     </div>
   );

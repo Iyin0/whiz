@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         const emailHtml = await render(VolunteerFormEmail({ firstName, lastName, email, phone }));
 
         const response = await resend.emails.send({
-            from: 'support@simefoundation.org',
+            from: 'support@whizacademy.org',
             to: 'whizacademy4all@gmail.com',
             subject: 'New Volunteer Form Submission',
             html: emailHtml,

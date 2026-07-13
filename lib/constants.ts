@@ -17,14 +17,17 @@ export const NAV_LINKS = [
 
 export const contacts = [
   {
+    label: 'Call',
     icon: TbPhone,
-    value: ['+23458765673687', '+23458765673687'],
+    value: ['+447587873007'],
   },
   {
+    label: 'Visit',
     icon: TbMapPin,
     value: ['6, Mount Park Road, Ealing Broadway, London. W5 2RP'],
   },
   {
+    label: 'Email',
     icon: TbMail,
     value: ['whizacademy4all@gmail.com'],
   },

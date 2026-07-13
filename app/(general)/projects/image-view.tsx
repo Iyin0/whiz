@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -21,28 +20,29 @@ export default function ImageView({images}: {images: ImageType[]}) {
 
   if (images.length === 0) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-6 grid-rows-2 gap-5">
-        {Array.from({ length: 12 }).map((_, index) => (
-          <Skeleton key={index} className="rounded-lg w-full h-[200px]" />
-        ))}
+      <div className="rounded-lg border border-dashed bg-background p-8 text-center">
+        <p className="font-semibold text-foreground">No gallery images are available yet.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Workshop photos will appear here once the gallery source is updated.
+        </p>
       </div>
     );
   }
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-6 gap-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
         {images
           .filter((image) => image.webContentLink !== null && image.webContentLink !== undefined)
           .slice(0, count)
           .map((image) => (
-            <div key={image.id}>
+            <div key={image.id} className="overflow-hidden rounded-lg bg-muted">
               <Image
                 src={image.webContentLink ?? image.url}
                 alt={`${image.name}`}
                 width={196}
                 height={200}
-                className="rounded-lg w-[196px] h-[200px]"
+                className="aspect-square h-full w-full object-cover transition duration-300 hover:scale-105"
                 loading="lazy"
               />
             </div>
@@ -52,7 +52,7 @@ export default function ImageView({images}: {images: ImageType[]}) {
       <div className={cn('flex justify-center items-center w-full mt-10', count >= images.length ? 'hidden' : '')}>
         <Button
           variant="outline"
-          className="border-2 border-black rounded-full"
+          className="rounded-md border-primary text-primary hover:bg-primary hover:text-white"
           onClick={() => {
             if (count < images.length) {
               setCount(count + 12);

@@ -79,18 +79,26 @@ export default function ContactForm() {
   }
 
   return (
-    <div className="flex flex-col px-4 py-10 sm:px-20 sm:py-16 gap-8" id="contact">
-      <p>For any other inquiry, kindly fill the form below.</p>
+    <section className="bg-white px-4 py-14 sm:px-8 sm:py-20 lg:px-10" id="contact">
+      <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[0.85fr_1.15fr]">
+      <div>
+        <p className="text-sm font-semibold uppercase text-accent">General inquiry</p>
+        <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">Have another question?</h2>
+        <p className="mt-4 text-base leading-7 text-muted-foreground">
+          Send a message and the Whiz Academy team will follow up with the right information
+          for your community, institution, or support idea.
+        </p>
+      </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 w-full max-w-[600px]">
-          <div className="flex gap-4 w-fit">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full gap-4 rounded-lg border bg-background p-5 shadow-sm sm:p-6">
+          <div className="grid gap-4 sm:grid-cols-2">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input placeholder="First Name" {...field} className="rounded-md w-full h-12 max-w-[200px]"/>
+                    <Input placeholder="First Name" {...field} className="h-12 rounded-md bg-white"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,7 +110,7 @@ export default function ContactForm() {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input placeholder="Last Name" {...field} className="rounded-md w-full h-12 max-w-[200px]"/>
+                    <Input placeholder="Last Name" {...field} className="h-12 rounded-md bg-white"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,7 +123,7 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input placeholder="Email Address" {...field} className="rounded-md w-full h-12 max-w-[250px]"/>
+                  <Input placeholder="Email Address" {...field} className="h-12 rounded-md bg-white"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -127,9 +135,9 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Input placeholder="Phone Number" {...field} className="rounded-md w-full h-12 max-w-[280px]"/>
+                  <Input placeholder="Phone Number" {...field} className="h-12 rounded-md bg-white"/>
                 </FormControl>
-                <FormLabel className="text-xs text-gray-500">Include the country code (e.g. +23458765673687)</FormLabel>
+                <FormLabel className="text-xs text-muted-foreground">Include the country code (e.g. +447587873007)</FormLabel>
                 <FormMessage />
               </FormItem>
             )}
@@ -140,7 +148,7 @@ export default function ContactForm() {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <Textarea placeholder="Message" {...field} className="rounded-md w-full h-[200px] resize-none"/>
+                  <Textarea placeholder="Message" {...field} className="min-h-[180px] rounded-md bg-white resize-none"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -148,14 +156,14 @@ export default function ContactForm() {
           />
           <Button 
             type="submit"
-            variant="outline"
-            className="bg-white text-black/80 border border-black/50 w-fit py-3 px-5"
+            className="h-11 w-fit rounded-md bg-primary px-5 text-white hover:bg-primary/90"
             disabled={isLoading}
           >
               {isLoading ? 'Submitting...' : 'Submit'}
             </Button>
         </form>
       </Form>
-    </div>
+      </div>
+    </section>
   );
 }

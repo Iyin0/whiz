@@ -2,25 +2,25 @@ export default function Overview() {
 
   const content = [
     {
-      heading: '',
-      body: 'In today’s world, digital skills aren’t just an advantage they’re a necessity. Yet, in many communities, access to quality digital education remains a challenge. That’s where ODLP comes in. At the Offa Digital Literacy Program (ODLP), we’re on a mission to ensure that everyone regardless of age or background has the opportunity to become digitally empowered. With a bold goal of achieving 75% digital literacy in Offa, Kwara State, we’re making quality digital education accessible, inclusive, and impactful.', 
+      heading: 'Program mission',
+      body: 'Digital skills are no longer optional. ODLP exists to make practical technology education accessible, culturally aware, and useful for learners in Offa, Kwara State.',
     },
     {
-      heading: 'What We’ve Achieved So Far',
-      body: 'Since 2022, we’ve successfully organized three digital literacy workshops, reaching over 300 secondary school students. These workshops, held every August for two weeks, have been the foundation of our movement introducing young minds to the power of digital skills and preparing them for the future.\nBut we’re not stopping there. We’re expanding. New initiatives are on the horizon, designed to equip adults, youths, and other community members with essential digital skills.',
+      heading: 'What we have achieved so far',
+      body: 'Since 2021, Whiz Academy has led digital literacy workshops and community outreach, reaching over 500 secondary school students. The work has introduced young people to useful digital tools, responsible technology habits, and future-ready skills with local participation at the center.',
     },
     {
-      heading: 'Why It Matters',
-      body: 'Digital Enlightenment – Understanding the digital world and how it impacts daily life.\nNew & Sharpened Skills – Hands-on training in essential digital tools.\nOpportunities for Growth – Access to resources that can change careers and futures.',
+      heading: 'Why it matters',
+      body: 'When communities have the skills and confidence to use technology on their own terms, digital access becomes more than exposure. It becomes a path to education, livelihoods, and everyday problem-solving.',
     },
   ];
 
   return (
-    <div>
+    <div className="grid gap-6 lg:grid-cols-3">
       {content.map((item, index) => (
-        <div key={index} className="mt-10">
-          <h3 className="text-lg font-bold mb-4">{item.heading}</h3>
-          <p className="text-base whitespace-pre-line">{item.body}</p>
+        <div key={index} className="border-l-2 border-primary/20 pl-5">
+          <h3 className="text-lg font-bold text-foreground">{item.heading}</h3>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.body}</p>
         </div>
       ))}
     </div>
