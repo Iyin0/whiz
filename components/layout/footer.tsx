@@ -1,161 +1,168 @@
 import Link from 'next/link';
-import Image from 'next/image';
-import { MapPin, Phone } from 'lucide-react';
-import { RiFacebookCircleFill, RiInstagramLine, RiLinkedinBoxFill, RiTwitterXLine } from 'react-icons/ri';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import {
+  RiFacebookFill,
+  RiInstagramLine,
+  RiLinkedinBoxFill,
+  RiTwitterXFill,
+  RiYoutubeFill,
+} from 'react-icons/ri';
+
+import { Logo } from '@/components/ui/logo';
+import { Button } from '@/components/ui/button';
+
+const socialLinks = [
+  {
+    label: 'X (formerly Twitter)',
+    href: 'https://x.com/Whizacademy_',
+    icon: RiTwitterXFill,
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/whizacademy4all',
+    icon: RiLinkedinBoxFill,
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/whizacademy_',
+    icon: RiInstagramLine,
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/share/18iPXg3E6u',
+    icon: RiFacebookFill,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@WhizAcademy',
+    icon: RiYoutubeFill,
+  },
+];
+
+const organizationLinks = [
+  { label: 'About Us', href: '/about' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const involvementLinks = [
+  { label: 'Donate', href: '/donate' },
+  { label: 'Volunteer', href: '/volunteer' },
+  { label: 'Partner With Us', href: '/partner' },
+  { label: 'Programs', href: '/programs' },
+];
 
 export default function Footer() {
-  const date = new Date();
-
-  const contacts = [
-    {
-      title: 'Address:',
-      icon: MapPin,
-      value: ['6, Mount Park Road, Ealing Broadway, London. W5 2RP']
-    },
-    {
-      title: 'Contact:',
-      icon: Phone,
-      value: ['+447587873007', 'whizacademy4all@gmail.com']
-    },
-  ];
-
-  const socials = [
-    {
-      title: 'Facebook',
-      value: 'https://www.facebook.com/share/18iPXg3E6u',
-      icon: RiFacebookCircleFill
-    },
-    {
-      title: 'Instagram',
-      value: 'https://www.instagram.com/whizacademy_',
-      icon: RiInstagramLine
-    },
-    {
-      title: 'Twitter',
-      value: 'https://x.com/Whizacademy_',
-      icon: RiTwitterXLine
-    },
-    {
-      title: 'LinkedIn',
-      value: 'https://www.linkedin.com/company/whizacademy4all',
-      icon: RiLinkedinBoxFill
-    }
-  ];
-
-  const firstColumn = [
-    {
-      title: 'Home',
-      link: '/'
-    },
-    {
-      title: 'Projects',
-      link: '/projects'
-    },
-    {
-      title: 'Careers',
-      link: '/careers'
-    },
-    {
-      title: 'FAQs',
-      link: '#faqs'
-    },
-    {
-      title: 'Policies',
-      link: '#'
-    },
-    {
-      title: 'SIME Foundation',
-      link: 'https://simefoundation.org/'
-    },
-  ];
-
-  const secondColumn = [
-    {
-      title: 'Volunteer',
-      link: '/contact#volunteer'
-    },
-    {
-      title: 'Sponsorship',
-      link: '/contact#sponsorship'
-    },
-    {
-      title: 'Partnership',
-      link: '/contact#partnership'
-    },
-    {
-      title: 'Donate',
-      link: '/contact#donate'
-    },
-    {
-      title: 'Contact Us',
-      link: '/contact'
-    },
-  ];
-
   return (
-    <footer className="bg-[#102f2a] px-4 text-white sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-7xl py-14 sm:py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_1fr]">
-          <div className="flex max-w-sm flex-col gap-6">
-            <Link href="/" className="w-fit rounded-md bg-white px-3 py-2">
-              <Image src="/images/NavLogo.png" alt="Whiz Academy" width={131} height={48} />
+    <footer className="border-t border-black/[0.08] bg-white text-[#0d1117] transition-colors duration-300 dark:border-white/10 dark:bg-[#0d1117] dark:text-white">
+      <div className="mx-auto max-w-[1280px] px-6 py-12 sm:py-16">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <Link href="/" aria-label="Whiz Academy home" className="inline-flex">
+              <Logo textColor="theme" />
             </Link>
-            <p className="text-sm leading-6 text-white/75">
-              A community-led digital literacy initiative helping rural African learners
-              build confidence, access, and practical skills for a technology-driven world.
+            <p className="mt-4 max-w-[238px] text-sm leading-[22.75px] text-[#6b7280] transition-colors duration-300 dark:text-white/60">
+              Bridging the digital divide in rural Nigeria through education, innovation, and
+              community empowerment.
             </p>
-            {contacts.map((contact) => (
-              <div key={contact.title} className="flex gap-3 text-sm text-white/80">
-                <contact.icon className="mt-0.5 h-4 w-4 shrink-0 text-secondary" />
-                <div>
-                  <h3 className="font-semibold text-white">{contact.title}</h3>
-                  {contact.value.map((item) => (
-                    <p key={item} className="mt-1">{item}</p>
-                  ))}
+            <div className="mt-6 flex flex-wrap gap-3">
+              {socialLinks.map((social) => (
+                <Button
+                  key={social.label}
+                  asChild
+                  variant="outline"
+                  size="icon"
+                  className="size-9 rounded-xl border-black/[0.08] bg-transparent text-[#6b7280] shadow-none transition-all duration-300 hover:-translate-y-1 hover:border-[#04af9f]/35 hover:bg-[#04af9f]/[0.06] hover:text-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/30 dark:border-white/10 dark:text-white/60 dark:hover:border-[#04af9f]/45 dark:hover:bg-[#04af9f]/10 dark:hover:text-[#04af9f] [&_svg]:size-[15px]"
+                >
+                  <Link
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                  >
+                    <social.icon aria-hidden="true" />
+                  </Link>
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <FooterColumn title="Organization" links={organizationLinks} />
+          <FooterColumn title="Get Involved" links={involvementLinks} />
+
+          <div>
+            <h2 className="text-sm font-bold leading-5">Contact</h2>
+            <address className="mt-4 space-y-4 not-italic text-sm leading-5 text-[#6b7280] transition-colors duration-300 dark:text-white/60">
+              <div className="flex items-start gap-3">
+                <MapPin aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-[#04af9f]" />
+                <span>3, Adebiyi Street, Behind Yidi Praying Ground, Offa, Kwara State, Nigeria</span>
+              </div>
+              <Link
+                href="mailto:whizacademy4all@gmail.com"
+                className="group flex items-start gap-3 transition-colors hover:text-[#04af9f]"
+              >
+                <Mail aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-[#04af9f]" />
+                <span>whizacademy4all@gmail.com</span>
+              </Link>
+              <div className="flex items-start gap-3">
+                <Phone aria-hidden="true" className="mt-0.5 size-3.5 shrink-0 text-[#04af9f]" />
+                <div className="space-y-0.5">
+                  <Link href="tel:+2348105859460" className="block transition-colors hover:text-[#04af9f]">
+                    +234 810 585 9460
+                  </Link>
+                  <Link href="tel:+2348105853150" className="block transition-colors hover:text-[#04af9f]">
+                    +234 810 585 3150
+                  </Link>
+                  <Link href="tel:+447587873007" className="block transition-colors hover:text-[#04af9f]">
+                    +44 758 787 3007
+                  </Link>
                 </div>
               </div>
-            ))}
+            </address>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:max-w-md">
-            <div className="flex flex-col gap-3">
-              <h3 className="text-sm font-semibold uppercase text-white/60">Explore</h3>
-              {firstColumn.map((item) => (
-                <Link key={item.title} href={item.link} className="text-sm text-white/75 transition hover:text-white">{item.title}</Link>
-              ))}
-            </div>
-            <div className="flex flex-col gap-3">
-              <h3 className="text-sm font-semibold uppercase text-white/60">Act</h3>
-              {secondColumn.map((item) => (
-                <Link key={item.title} href={item.link} className="text-sm text-white/75 transition hover:text-white">{item.title}</Link>
-              ))}
-            </div>
-          </div>
-          <div className="flex flex-col justify-between gap-8 lg:items-end">
-            <div className="max-w-sm lg:text-right">
-              <h3 className="text-xl font-semibold">Support the next community cohort.</h3>
-              <p className="mt-3 text-sm leading-6 text-white/70">
-                Volunteer, sponsor, donate, or partner with Whiz Academy to help local
-                communities lead their own digital growth.
-              </p>
-            </div>
-            <div className="flex gap-3">
-          {socials.map((social) => (
-            <Link
-              key={social.title}
-              href={social.value}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.title}
-              className="flex h-10 w-10 items-center justify-center rounded-md border border-white/[0.15] text-white/75 transition hover:border-secondary hover:text-white"
-            >
-              <social.icon className="text-xl" />
+        </div>
+
+        <div className="mt-16 flex flex-col gap-5 border-t border-black/[0.08] pt-8 text-xs leading-4 text-[#6b7280] transition-colors duration-300 dark:border-white/10 dark:text-white/50 sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2024 Whiz Academy. Registered NGO, Nigeria. All rights reserved.</p>
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <Link href="/privacy" className="transition-colors hover:text-[#04af9f]">
+              Privacy Policy
             </Link>
-          ))}
-            </div>
+            <Link href="/terms" className="transition-colors hover:text-[#04af9f]">
+              Terms of Use
+            </Link>
+            <Link href="/accessibility" className="transition-colors hover:text-[#04af9f]">
+              Accessibility
+            </Link>
           </div>
         </div>
       </div>
-      <p className="mx-auto max-w-7xl border-t border-white/[0.12] py-5 text-center text-xs text-white/60 sm:text-left">{`© ${date.getFullYear()} Whiz Academy. All rights reserved.`}</p>
     </footer>
+  );
+}
+
+function FooterColumn({
+  title,
+  links,
+}: {
+  title: string;
+  links: Array<{ label: string; href: string }>;
+}) {
+  return (
+    <div>
+      <h2 className="text-sm font-bold leading-5">{title}</h2>
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className="inline-flex text-sm leading-5 text-[#6b7280] transition-all duration-300 hover:translate-x-1 hover:text-[#04af9f] dark:text-white/60 dark:hover:text-[#04af9f]"
+            >
+              {link.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

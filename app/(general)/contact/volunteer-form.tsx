@@ -1,144 +1,66 @@
 'use client';
 
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { parsePhoneNumberFromString, isValidPhoneNumber } from 'libphonenumber-js';
+import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
-  firstName: z.string().min(1, {
-    message: 'First name is required',
-  }),
-  lastName: z.string().min(1, {
-    message: 'Last name is required',
-  }),
-  email: z.string().email({
-    message: 'Invalid email address',
-  }),
-  phone: z.string().min(1, {
-    message: 'Phone number is required',
-  }).refine((value) => {
-    const phoneNumber = parsePhoneNumberFromString(value);
-    if (!phoneNumber) return false;
-    return isValidPhoneNumber(phoneNumber.number);
-  }, {
-    message: 'Invalid phone number. Country code is required.',
-  }),
+  fullName: z.string().min(2, 'Full name is required.'),
+  email: z.string().email('Enter a valid email address.'),
+  linkedIn: z.string().url('Enter a valid LinkedIn URL.').or(z.literal('')),
+  role: z.string().min(1, 'Choose a volunteer role.'),
+  availability: z.string().min(1, 'Tell us when you are available.'),
+  experience: z.string().min(20, 'Please share a little more about your skills.'),
 });
+
+type VolunteerValues = z.infer<typeof formSchema>;
+const fieldClassName = 'h-12 rounded-2xl border-black/[0.08] bg-[#f3f6f5] px-4 text-sm shadow-none placeholder:text-[#6b7280]/70 focus-visible:border-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white';
 
 export default function VolunteerForm() {
   const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '', 
-      email: '',
-      phone: '',
-    },
-  });
+  const form = useForm<VolunteerValues>({ resolver: zodResolver(formSchema), defaultValues: { fullName: '', email: '', linkedIn: '', role: '', availability: '', experience: '' } });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: VolunteerValues) {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/volunteer', {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: { 'Content-Type': 'application/json' },
-      });
-    
-      if (response.ok) {
-        toast.success('Your volunteer request has been sent!');
-        form.reset();
-      } else {
-        throw new Error('Failed to send volunteer request. Please try again.');
+      const response = await fetch('/api/volunteer', { method: 'POST', body: JSON.stringify(values), headers: { 'Content-Type': 'application/json' } });
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error ?? 'Failed to send volunteer request. Please try again.');
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast.error(error.message);
+      toast.success('Your volunteer application has been sent.');
+      form.reset();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Unable to submit your application.');
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <div className="flex flex-col gap-6 pb-6">
-      <p className="text-sm text-muted-foreground">Share your details and we will reach out about community volunteer opportunities.</p>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full max-w-3xl gap-4">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input placeholder="First Name" {...field} className="h-12 rounded-md bg-white"/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input placeholder="Last Name" {...field} className="h-12 rounded-md bg-white"/>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input placeholder="Email Address" {...field} className="h-12 rounded-md bg-white"/>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <Input placeholder="Phone Number" {...field} className="h-12 rounded-md bg-white"/>
-                </FormControl>
-                <FormLabel className="text-xs text-muted-foreground">Include the country code (e.g. +447587873007)</FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button 
-            type="submit" 
-            variant="outline" 
-            className="h-11 w-fit rounded-md bg-primary px-5 text-white hover:bg-primary/90"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Submitting...' : 'Volunteer'}
-          </Button>
-        </form>
-      </Form>
-    </div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4 rounded-3xl border border-black/[0.08] bg-[#f8fafb] p-6 dark:border-white/10 dark:bg-[#141d20] sm:p-8">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField control={form.control} name="fullName" render={({ field }) => <FormItem><FormLabel className="sr-only">Full name</FormLabel><FormControl><Input autoComplete="name" placeholder="Full name" {...field} className={fieldClassName} /></FormControl><FormMessage /></FormItem>} />
+          <FormField control={form.control} name="email" render={({ field }) => <FormItem><FormLabel className="sr-only">Email address</FormLabel><FormControl><Input type="email" autoComplete="email" placeholder="Email address" {...field} className={fieldClassName} /></FormControl><FormMessage /></FormItem>} />
+        </div>
+        <FormField control={form.control} name="linkedIn" render={({ field }) => <FormItem><FormLabel className="sr-only">LinkedIn profile URL (optional)</FormLabel><FormControl><Input type="url" autoComplete="url" placeholder="LinkedIn profile URL (optional)" {...field} className={fieldClassName} /></FormControl><FormMessage /></FormItem>} />
+        <FormField control={form.control} name="role" render={({ field }) => <FormItem><FormLabel className="sr-only">Volunteer role</FormLabel><Select value={field.value} onValueChange={field.onChange}><FormControl><SelectTrigger className={fieldClassName} aria-label="Volunteer role"><SelectValue placeholder="Select a volunteer role" /></SelectTrigger></FormControl><SelectContent>{['Program Instructor', 'Curriculum Developer', 'Mentor', 'Community Outreach', 'Technical Support', 'Fundraising & Partnerships'].map((role) => <SelectItem key={role} value={role}>{role}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>} />
+        <FormField control={form.control} name="availability" render={({ field }) => <FormItem><FormLabel className="sr-only">Availability</FormLabel><Select value={field.value} onValueChange={field.onChange}><FormControl><SelectTrigger className={fieldClassName} aria-label="Availability"><SelectValue placeholder="Select your availability" /></SelectTrigger></FormControl><SelectContent>{['2–4 hours per week', '5–10 hours per week', 'Weekends', 'Project-based', 'Full programme cohort'].map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}</SelectContent></Select><FormMessage /></FormItem>} />
+        <FormField control={form.control} name="experience" render={({ field }) => <FormItem><FormLabel className="sr-only">Skills and motivation</FormLabel><FormControl><Textarea placeholder="Tell us about your skills and why you want to volunteer with Whiz Academy..." {...field} className="min-h-[115px] resize-none rounded-2xl border-black/[0.08] bg-[#f3f6f5] p-4 text-sm shadow-none placeholder:text-[#6b7280]/70 focus-visible:border-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white" /></FormControl><FormMessage /></FormItem>} />
+        <Button type="submit" disabled={isLoading} className="h-13 w-full rounded-xl bg-[#04af9f] text-sm font-bold text-white shadow-none hover:bg-[#039b8d] active:bg-[#028579]">
+          {isLoading ? 'Submitting...' : 'Submit Application'}{!isLoading ? <ArrowRight aria-hidden="true" className="size-4" /> : null}
+        </Button>
+      </form>
+    </Form>
   );
 }

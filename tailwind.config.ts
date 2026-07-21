@@ -9,6 +9,10 @@ export default {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			sans: ['var(--font-sans)', 'sans-serif'],
+			jakarta: ['var(--font-plus-jakarta-sans)', 'sans-serif']
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -91,20 +95,42 @@ export default {
   					height: 'var(--radix-accordion-content-height)'
   				}
   			},
-  			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
-  				},
-  				to: {
-  					height: '0'
-  				}
-  			}
-  		},
-  		animation: {
-  			'slide-up': 'slide-up 10s infinite',
-  			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+			'accordion-up': {
+				from: {
+					height: 'var(--radix-accordion-content-height)'
+				},
+				to: {
+					height: '0'
+				}
+			},
+			'voice-in-up': {
+				'0%': {
+					opacity: '0',
+					transform: 'translateY(32px)'
+				},
+				'100%': {
+					opacity: '1',
+					transform: 'translateY(0)'
+				}
+			},
+			'voice-in-down': {
+				'0%': {
+					opacity: '0',
+					transform: 'translateY(-32px)'
+				},
+				'100%': {
+					opacity: '1',
+					transform: 'translateY(0)'
+				}
+			}
+		},
+		animation: {
+			'slide-up': 'slide-up 10s infinite',
+			'accordion-down': 'accordion-down 0.2s ease-out',
+			'accordion-up': 'accordion-up 0.2s ease-out',
+			'voice-in-up': 'voice-in-up 450ms cubic-bezier(0.22, 1, 0.36, 1) both',
+			'voice-in-down': 'voice-in-down 450ms cubic-bezier(0.22, 1, 0.36, 1) both'
+		}
   	}
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

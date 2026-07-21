@@ -1,26 +1,35 @@
-import * as React from "react";
-import { Html, Head, Body, Container, Text, Heading, Section } from "@react-email/components";
+import * as React from 'react';
+import { Body, Container, Head, Heading, Html, Section, Text } from '@react-email/components';
 
-interface ContactFormEmailProps {
+export interface ContactFormEmailProps {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
+  subject: string;
   message: string;
 }
 
-export default function ContactFormEmail({ firstName, lastName, email, phone, message }: ContactFormEmailProps) {
+export default function ContactFormEmail({
+  firstName,
+  lastName,
+  email,
+  phone,
+  subject,
+  message,
+}: ContactFormEmailProps) {
   return (
     <Html>
       <Head />
-      <Body style={{ fontFamily: "Arial, sans-serif", padding: "20px", backgroundColor: "#f4f4f4" }}>
-        <Container style={{ maxWidth: "600px", backgroundColor: "#ffffff", padding: "20px", borderRadius: "5px" }}>
-          <Heading style={{ color: "#333", textAlign: "center" }}>New Contact Form Submission</Heading>
+      <Body style={{ fontFamily: 'Arial, sans-serif', padding: '20px', backgroundColor: '#f4f4f4' }}>
+        <Container style={{ maxWidth: '600px', backgroundColor: '#ffffff', padding: '20px', borderRadius: '5px' }}>
+          <Heading style={{ color: '#333', textAlign: 'center' }}>New Contact Form Submission</Heading>
           <Section>
             <Text><strong>First Name:</strong> {firstName}</Text>
             <Text><strong>Last Name:</strong> {lastName}</Text>
             <Text><strong>Email:</strong> {email}</Text>
-            <Text><strong>Phone:</strong> {phone}</Text>
+            <Text><strong>Phone:</strong> {phone || 'Not provided'}</Text>
+            <Text><strong>Subject:</strong> {subject}</Text>
             <Text><strong>Message:</strong></Text>
             <Text>{message}</Text>
           </Section>
@@ -28,4 +37,4 @@ export default function ContactFormEmail({ firstName, lastName, email, phone, me
       </Body>
     </Html>
   );
-};
+}

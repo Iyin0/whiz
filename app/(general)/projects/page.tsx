@@ -33,7 +33,7 @@ export default function Projects() {
             tracks being prepared for rural African learners.
           </p>
           <Button asChild className="mt-8 h-12 w-fit rounded-md bg-secondary px-6 text-secondary-foreground hover:bg-secondary/90">
-            <Link href="/contact#partnership">
+            <Link href="/partner#partner-form">
               Partner on a program
               <ArrowRight className="h-4 w-4" />
             </Link>

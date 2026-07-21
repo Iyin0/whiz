@@ -1,151 +1,120 @@
-'use client';
-
-import { contacts } from '@/lib/constants';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { Clock3, Mail, MapPin, Phone } from 'lucide-react';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import { useCallback, useEffect, useState } from 'react';
-import ContactForm from './contact-form';
-import VolunteerForm from './volunteer-form';
-import DonationForm from './donation-form';
-import PartnershipForm from './partnership-form';
-import SponsorshipForm from './sponsorship-form';
+  RiInstagramLine,
+  RiLinkedinFill,
+  RiTwitterXFill,
+  RiYoutubeFill,
+} from 'react-icons/ri';
 
-const formHashToValue: Record<string, string> = {
-  volunteer: 'Volunteer',
-  sponsorship: 'Sponsorship',
-  partnership: 'Partnership',
-  donate: 'Donation',
+import { PageHero } from '@/components/site/page-hero';
+import { Button } from '@/components/ui/button';
+import { Reveal } from '@/components/ui/reveal';
+
+import ContactForm from './contact-form';
+
+export const metadata: Metadata = {
+  title: 'Contact | Whiz Academy',
+  description: 'Contact Whiz Academy to volunteer, partner, donate equipment, or bring our programs to your community.',
 };
 
-export default function Contact() {
-  const [openForm, setOpenForm] = useState('Volunteer');
+const socialLinks = [
+  { label: 'X (formerly Twitter)', href: 'https://x.com/Whizacademy_', icon: RiTwitterXFill },
+  { label: 'Instagram', href: 'https://www.instagram.com/whizacademy_', icon: RiInstagramLine },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/whizacademy4all', icon: RiLinkedinFill },
+  { label: 'YouTube', href: 'https://www.youtube.com/@WhizAcademy', icon: RiYoutubeFill },
+];
 
-  const openFormFromHash = useCallback(() => {
-    const hash = window.location.hash.replace('#', '');
-    const nextForm = formHashToValue[hash];
+interface ContactPageProps {
+  searchParams: Promise<{ subject?: string }>;
+}
 
-    if (!nextForm) {
-      return;
-    }
-
-    setOpenForm(nextForm);
-
-    window.setTimeout(() => {
-      const target = document.getElementById(hash);
-      const trigger = target?.querySelector<HTMLButtonElement>('button');
-
-      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      trigger?.focus({ preventScroll: true });
-    }, 120);
-  }, []);
-
-  useEffect(() => {
-    openFormFromHash();
-    window.addEventListener('hashchange', openFormFromHash);
-
-    return () => {
-      window.removeEventListener('hashchange', openFormFromHash);
-    };
-  }, [openFormFromHash]);
-
-  const forms = [
-    {
-      id: 'volunteer',
-      title: 'Volunteer',
-      description: 'Offer time, skills, or mentorship alongside local facilitators.',
-      form: <VolunteerForm />,
-    },
-    {
-      id: 'sponsorship',
-      title: 'Sponsorship',
-      description: 'Underwrite equipment, learning materials, logistics, or a full cohort.',
-      form: <SponsorshipForm />,
-    },
-    {
-      id: 'partnership',
-      title: 'Partnership',
-      description: 'Collaborate with Whiz Academy through institutions and community networks.',
-      form: <PartnershipForm />,
-    },
-    {
-      id: 'donate',
-      title: 'Donation',
-      description: 'Give funds, devices, materials, or useful resources communities can keep using.',
-      form: <DonationForm />,
-    },
-  ];
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const { subject } = await searchParams;
+  const initialMessage = subject ? `I would like to learn more about ${subject}.` : '';
 
   return (
-    <div>
-      <section className="relative min-h-[100svh] overflow-hidden bg-[url('/images/ContactHero.png')] bg-cover bg-center">
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(9,31,28,0.94)_0%,rgba(9,31,28,0.76)_52%,rgba(9,31,28,0.26)_100%)]" />
-        <div className="relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-center px-4 py-28 text-white sm:px-8 lg:px-10">
-          <p className="text-sm font-semibold uppercase text-secondary">Contact</p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold sm:text-6xl">Build with a community-led foundation initiative.</h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-white/75">
-            Reach out to volunteer, sponsor, partner, donate, or ask a question about
-            expanding practical digital literacy through local leadership.
-          </p>
+    <main className="bg-white pt-16 text-[#0d1117] transition-colors dark:bg-[#0d1117] dark:text-white">
+      <PageHero
+        compact
+        eyebrow="Contact Us"
+        title="Let's build something together"
+        description="Whether you want to volunteer, partner, donate equipment, or bring our programs to your community, we'd love to hear from you."
+        className="bg-[linear-gradient(145deg,#0c1219_0%,#0a211f_100%)]"
+      />
 
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {contacts.map((contact) => (
-              <div key={contact.label} className="rounded-lg border border-white/[0.14] bg-white/10 p-5 backdrop-blur">
-                <contact.icon className="h-6 w-6 text-secondary" />
-                <h2 className="mt-4 text-sm font-semibold uppercase text-white/60">{contact.label}</h2>
-                <div className="mt-2 space-y-1">
-                  {contact.value.map((value) => (
-                    <p key={value} className="text-sm leading-6 text-white/85">{value}</p>
-                  ))}
-                </div>
+      <section className="px-6 py-20 sm:py-24">
+        <div className="mx-auto grid max-w-[1095px] gap-14 lg:grid-cols-[400px_1fr] lg:gap-48">
+          <Reveal>
+            <h2 className="font-jakarta text-2xl font-extrabold">Get in touch</h2>
+            <div className="mt-7 space-y-6">
+              <ContactDetail icon={Mail} label="Email">
+                <Link href="mailto:whizacademy4all@gmail.com" className="font-medium transition-colors hover:text-[#04af9f]">whizacademy4all@gmail.com</Link>
+              </ContactDetail>
+              <ContactDetail icon={Phone} label="Phone">
+                <Link href="tel:+2348105859460" className="block font-medium transition-colors hover:text-[#04af9f]">+234 810 585 9460</Link>
+                <Link href="tel:+2348105853150" className="block font-medium transition-colors hover:text-[#04af9f]">+234 810 585 3150</Link>
+                <Link href="tel:+447587873007" className="block font-medium transition-colors hover:text-[#04af9f]">+44 758 787 3007</Link>
+              </ContactDetail>
+              <ContactDetail icon={Clock3} label="Hours">
+                <p className="font-medium">Mon – Sat, 9am – 5pm WAT</p>
+              </ContactDetail>
+            </div>
+
+            <h2 className="mt-12 font-jakarta text-xl font-extrabold">Head Office</h2>
+            <div className="mt-5 rounded-2xl border border-[#dfe4e8] bg-[#f8fafb] p-6 dark:border-white/10 dark:bg-[#141d20]">
+              <p className="text-sm font-bold text-[#04af9f]">Kwara State</p>
+              <div className="mt-3 flex items-start gap-3 text-sm leading-6 text-[#6b7280] dark:text-white/60">
+                <MapPin aria-hidden="true" className="mt-1 size-4 shrink-0 text-[#04af9f]" />
+                <address className="not-italic">3, Adebiyi Street, Behind Yidi Praying Ground, Offa, Kwara State, Nigeria</address>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      <section className="bg-background px-4 py-14 sm:px-8 sm:py-20 lg:px-10">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-8 max-w-2xl">
-            <p className="text-sm font-semibold uppercase text-accent">Ways to help</p>
-            <h2 className="mt-3 text-3xl font-bold text-foreground sm:text-4xl">Choose how you want to stand with the work.</h2>
-            <p className="mt-4 text-base leading-7 text-muted-foreground">
-              Each form sends your request directly to the Whiz Academy team so we can follow up
-              with the right next steps for your support, institution, or community.
-            </p>
-          </div>
-          <Accordion
-            type="single"
-            collapsible
-            value={openForm}
-            onValueChange={(value) => {
-              setOpenForm(value);
-            }}
-            className="space-y-4"
-          >
-            {forms.map((form) => (
-              <AccordionItem
-                key={form.id}
-                value={form.title}
-                id={form.id}
-                className="scroll-mt-28 rounded-lg border bg-white px-5 shadow-sm"
-              >
-                <AccordionTrigger className="py-5 text-left hover:no-underline">
-                  <div>
-                    <h3 className="text-xl font-semibold text-foreground">{form.title}</h3>
-                    <p className="mt-1 text-sm font-normal text-muted-foreground">{form.description}</p>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>{form.form}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+            <div className="mt-7 rounded-2xl border border-[#d9efeb] bg-[linear-gradient(145deg,#effaf8_0%,#fffaf4_100%)] p-7 dark:border-white/10 dark:bg-[linear-gradient(145deg,#102321_0%,#191c1b_100%)]">
+              <h2 className="font-jakarta text-lg font-extrabold">Follow our journey</h2>
+              <p className="mt-3 text-sm leading-6 text-[#6b7280] dark:text-white/60">Daily updates on programs, graduates, and community impact.</p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {socialLinks.map((social) => (
+                  <Button
+                    key={social.label}
+                    asChild
+                    variant="outline"
+                    size="icon"
+                    className="size-10 rounded-full border-[#04af9f]/25 bg-white/70 text-[#04af9f] shadow-none transition-all duration-300 hover:-translate-y-0.5 hover:border-[#04af9f] hover:bg-[#04af9f] hover:text-white focus-visible:ring-2 focus-visible:ring-[#04af9f]/35 dark:border-white/15 dark:bg-white/[0.04] dark:text-[#14c6b5] dark:hover:border-[#04af9f] dark:hover:bg-[#04af9f] dark:hover:text-white"
+                  >
+                    <Link
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Follow Whiz Academy on ${social.label}`}
+                      title={social.label}
+                    >
+                      <social.icon aria-hidden="true" className="size-[18px]" />
+                    </Link>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <ContactForm initialSubject={subject ? 'Programme information' : ''} initialMessage={initialMessage} />
+          </Reveal>
         </div>
       </section>
-      <ContactForm />
+    </main>
+  );
+}
+
+function ContactDetail({ icon: Icon, label, children }: { icon: typeof Mail; label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-4">
+      <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#dff5f3] text-[#04af9f]"><Icon aria-hidden="true" className="size-4" /></span>
+      <div>
+        <p className="text-xs text-[#6b7280] dark:text-white/50">{label}</p>
+        <div className="mt-1 text-sm leading-6">{children}</div>
+      </div>
     </div>
   );
 }

@@ -62,6 +62,7 @@ export async function POST(req: Request) {
 
     const resend = new Resend(apiKey);
     const emailHtml = await render(ApplicationFormEmail({
+      roleId: payload.roleId,
       roleTitle: role.title,
       roleType: role.type,
       firstName: payload.firstName,
@@ -75,11 +76,14 @@ export async function POST(req: Request) {
       statement: payload.statement,
       cvUrl: payload.cvUrl,
       portfolioUrl: payload.portfolioUrl,
+      safeguardingAgreement: payload.safeguardingAgreement,
+      consent: payload.consent,
     }));
 
     const response = await resend.emails.send({
       from: 'support@whizacademy.org',
       to: careerMeta.email,
+      replyTo: payload.email,
       subject: `New Whiz Academy Application - ${role.title}`,
       html: emailHtml,
     });
@@ -94,6 +98,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Please check the application form and try again.' }, { status: 400 });
     }
 
-    return NextResponse.json({ error: `Failed to send application: ${error}` }, { status: 500 });
+    // eslint-disable-next-line no-console
+    console.error('Failed to send application form submission', error);
+    return NextResponse.json({ error: 'Failed to send application. Please try again.' }, { status: 500 });
   }
 }

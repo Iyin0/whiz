@@ -1,5 +1,7 @@
-import Link from 'next/link';
 import { ArrowRight, Laptop, UsersRound } from 'lucide-react';
+import Link from 'next/link';
+
+import { Button } from '@/components/ui/button';
 
 export default function InDevelopment() {
   return (
@@ -11,13 +13,12 @@ export default function InDevelopment() {
           Whiz Academy is planning additional programs for youths, adults, and community members
           who need practical digital support designed around local realities.
         </p>
-        <Link
-          href="/contact#partnership"
-          className="mt-7 inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-white transition hover:bg-primary/90"
-        >
-          Discuss a program partnership
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <Button asChild className="mt-7 h-11 rounded-md bg-primary px-5 text-sm font-semibold text-white hover:bg-primary/90">
+          <Link href="/partner#partner-form">
+            Discuss a program partnership
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Button>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         {[

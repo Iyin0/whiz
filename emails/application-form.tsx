@@ -10,6 +10,7 @@ import {
 } from '@react-email/components';
 
 interface ApplicationFormEmailProps {
+  roleId: string;
   roleTitle: string;
   roleType: string;
   firstName: string;
@@ -23,6 +24,8 @@ interface ApplicationFormEmailProps {
   statement: string;
   cvUrl?: string;
   portfolioUrl?: string;
+  safeguardingAgreement: boolean;
+  consent: boolean;
 }
 
 const labelStyle = {
@@ -31,6 +34,7 @@ const labelStyle = {
 };
 
 export default function ApplicationFormEmail({
+  roleId,
   roleTitle,
   roleType,
   firstName,
@@ -44,6 +48,8 @@ export default function ApplicationFormEmail({
   statement,
   cvUrl,
   portfolioUrl,
+  safeguardingAgreement,
+  consent,
 }: ApplicationFormEmailProps) {
   return (
     <Html>
@@ -53,6 +59,7 @@ export default function ApplicationFormEmail({
           <Heading style={{ color: '#0f2f2a', marginTop: 0 }}>New Whiz Academy Application</Heading>
           <Section>
             <Text><span style={labelStyle}>Role:</span> {roleTitle}</Text>
+            <Text><span style={labelStyle}>Role ID:</span> {roleId}</Text>
             <Text><span style={labelStyle}>Role Type:</span> {roleType}</Text>
             <Text><span style={labelStyle}>Name:</span> {firstName} {lastName}</Text>
             <Text><span style={labelStyle}>Email:</span> {email}</Text>
@@ -62,6 +69,8 @@ export default function ApplicationFormEmail({
             <Text><span style={labelStyle}>Weekly Hours:</span> {weeklyHours}</Text>
             {cvUrl ? <Text><span style={labelStyle}>CV/Resume:</span> {cvUrl}</Text> : null}
             {portfolioUrl ? <Text><span style={labelStyle}>Portfolio:</span> {portfolioUrl}</Text> : null}
+            <Text><span style={labelStyle}>Safeguarding Agreement:</span> {safeguardingAgreement ? 'Confirmed' : 'Not confirmed'}</Text>
+            <Text><span style={labelStyle}>Contact Consent:</span> {consent ? 'Confirmed' : 'Not confirmed'}</Text>
           </Section>
 
           <Section>

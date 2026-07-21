@@ -1,34 +1,42 @@
-import { TbMail, TbMapPin, TbPhone } from 'react-icons/tb';
+import { TbMail, TbMapPin, TbPhone } from "react-icons/tb";
 
 export const NAV_LINKS = [
   {
-    label: 'Home',
-    href: '/',
+    label: "Home",
+    href: "/",
   },
   {
-    label: 'Projects',
-    href: '/projects',
+    label: "About",
+    href: "/about",
   },
   {
-    label: 'Contact',
-    href: '/contact',
+    label: "Programs",
+    href: "/programs",
+  },
+  {
+    label: "Partner",
+    href: "/partner",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
   },
 ];
 
 export const contacts = [
   {
-    label: 'Call',
+    label: "Call",
     icon: TbPhone,
-    value: ['+447587873007'],
+    value: ["+447587873007"],
   },
   {
-    label: 'Visit',
+    label: "Visit",
     icon: TbMapPin,
-    value: ['6, Mount Park Road, Ealing Broadway, London. W5 2RP'],
+    value: ["6, Mount Park Road, Ealing Broadway, London. W5 2RP"],
   },
   {
-    label: 'Email',
+    label: "Email",
     icon: TbMail,
-    value: ['whizacademy4all@gmail.com'],
+    value: ["whizacademy4all@gmail.com"],
   },
 ];

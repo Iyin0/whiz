@@ -1,9 +1,11 @@
 'use client';
 
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+
 import {
   Form,
   FormControl,
@@ -12,9 +14,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { ArrowRight, Mail } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Reveal } from '@/components/ui/reveal';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -37,70 +38,66 @@ export default function Newsletter() {
         body: JSON.stringify(values),
         headers: { 'Content-Type': 'application/json' },
       });
-    
-      if (response.ok) {
-        toast.success('You have been subscribed to our newsletter!');
-        form.reset();
-      } else {
-        throw new Error('Failed to subscribe. Please try again.');
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error ?? 'Failed to subscribe. Please try again.');
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast.error(error.message);
+
+      toast.success('You have been subscribed to our newsletter!');
+      form.reset();
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : 'Failed to subscribe. Please try again.');
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <section className="bg-background px-4 py-14 sm:px-8 sm:py-20 lg:px-10" id="newsletter">
-      <div className="mx-auto grid max-w-7xl gap-8 rounded-lg bg-[#102f2a] p-6 text-white shadow-xl sm:p-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-      <div>
-        <div className="flex h-11 w-11 items-center justify-center rounded-md bg-white/10 text-secondary">
-          <Mail className="h-5 w-5" />
-        </div>
-        <h2 className="mt-5 max-w-xl text-3xl font-bold sm:text-4xl">
-          Follow the field work.
+    <section className="bg-[rgba(241,245,244,0.4)] py-16 transition-colors duration-300 dark:bg-[#0a1716] sm:py-20" id="newsletter">
+      <Reveal className="mx-auto max-w-[768px] px-6 text-center">
+        <h2 className="font-jakarta text-3xl font-extrabold leading-tight tracking-[-0.75px] text-[#0d1117] transition-colors duration-300 dark:text-white sm:text-4xl sm:leading-10 sm:tracking-[-0.9px]">
+          Get impact stories in your inbox
         </h2>
-        <p className="mt-3 max-w-xl text-sm leading-6 text-white/70">
-          Receive notes from the communities, cohorts, and partners helping Whiz Academy
-          expand digital access from the ground up.
+        <p className="mt-4 text-base leading-6 text-[#6b7280] transition-colors duration-300 dark:text-white/60">
+          Program updates, success stories, events, and opportunities to support the movement.
         </p>
-      </div>
-      <div className="flex flex-col">
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3 sm:flex-row">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mx-auto mt-8 flex w-full max-w-[448px] flex-col gap-3 sm:flex-row"
+          >
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="w-full">
+                <FormItem className="flex-1 text-left">
                   <FormControl>
                     <Input
-                      placeholder="Enter your email"
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      placeholder="your@email.com"
+                      aria-label="Email address"
                       {...field}
-                      className="h-12 w-full rounded-md border-white/20 bg-white text-foreground placeholder:text-muted-foreground"
+                      className="h-12 rounded-2xl border-black/[0.08] bg-[#f8fafb] px-4 text-sm text-[#0d1117] shadow-none transition-all duration-300 placeholder:text-[#6b7280] hover:border-[#04af9f]/35 focus-visible:border-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-white/40 dark:hover:border-[#04af9f]/45"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="px-1 text-xs" />
                 </FormItem>
               )}
             />
             <Button
               type="submit"
-              className="h-12 rounded-md bg-secondary px-5 font-semibold text-secondary-foreground hover:bg-secondary/90"
+              className="h-12 rounded-2xl bg-[#04af9f] px-6 text-base font-semibold text-white shadow-none transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#039b8d] hover:text-white hover:shadow-[0_12px_28px_rgba(4,175,159,0.22)] focus-visible:ring-2 focus-visible:ring-[#04af9f]/40 disabled:pointer-events-none disabled:opacity-60"
               disabled={isLoading}
             >
-              {isLoading ? 'Submitting...' : 'Subscribe'}
-              <ArrowRight className="h-4 w-4" />
+              {isLoading ? 'Subscribing…' : 'Subscribe'}
             </Button>
           </form>
         </Form>
-        <p className="mt-3 text-xs leading-5 text-white/60">
-          Occasional updates only, focused on program progress and ways to support the work.
-        </p>
-      </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
