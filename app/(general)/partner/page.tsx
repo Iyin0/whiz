@@ -99,7 +99,7 @@ const tracks = [
 const opportunities = [
   {
     image: '/images/partner_community.jpg',
-    alt: 'Young people learning with laptops in a community',
+    alt: 'Students and educators gathered outside a community school',
     tag: 'Full community impact',
     icon: MapPin,
     title: 'Adopt a Community',
@@ -107,7 +107,7 @@ const opportunities = [
   },
   {
     image: '/images/partner_school.jpg',
-    alt: 'Students learning digital skills at school',
+    alt: 'A rural school building selected for digital education support',
     tag: '300–600 students impacted',
     icon: School,
     title: 'Adopt a School',
@@ -115,7 +115,7 @@ const opportunities = [
   },
   {
     image: '/images/partner_hub.jpg',
-    alt: 'A learner working in a digital hub',
+    alt: 'Learners working together in a community digital hub',
     tag: 'Permanent community asset',
     icon: University,
     title: 'Sponsor a Digital Hub',
@@ -123,7 +123,7 @@ const opportunities = [
   },
   {
     image: '/images/partner_learners.jpg',
-    alt: 'Learners receiving hands-on digital instruction',
+    alt: 'Students gathered after a community learning programme',
     tag: 'Direct learner sponsorship',
     icon: Users,
     title: 'Sponsor 100 Learners',
@@ -131,15 +131,15 @@ const opportunities = [
   },
   {
     image: '/images/partner_devices.jpg',
-    alt: 'A learner using a donated laptop',
+    alt: 'Learners using computers in a community lab',
     tag: 'Immediate tangible impact',
     icon: Monitor,
     title: 'Donate Digital Devices',
     description: 'Donate laptops, tablets, smartphones, monitors, or accessories every device goes directly into the hands of a learner who needs it.',
   },
   {
-    image: '/images/partner_community.jpg',
-    alt: 'Teachers and learners collaborating with technology',
+    image: '/images/partner_teacher.jpg',
+    alt: 'Teachers participating in a digital training session',
     tag: 'Force-multiplier effect',
     icon: GraduationCap,
     title: 'Support Teacher Training',
@@ -203,7 +203,7 @@ export default function PartnerPage() {
   return (
     <main className="overflow-hidden bg-white pt-16 text-[#0d1117] transition-colors dark:bg-[#0d1117] dark:text-white">
       <section className="relative isolate min-h-[747px] overflow-hidden text-white">
-        <Image src="/images/partner_hero.jpg" alt="Nigerian students learning digital skills" fill priority className="-z-20 object-cover" sizes="100vw" />
+        <Image src="/images/partner_hero.jpg" alt="Students and educators at a partner school in rural Nigeria" fill priority className="-z-20 object-cover" sizes="100vw" />
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(12,18,25,0.91)_0%,rgba(12,18,25,0.72)_52%,rgba(5,47,45,0.65)_100%)]" />
         <div className="mx-auto grid min-h-[747px] max-w-[1120px] items-center gap-12 px-6 py-16 lg:grid-cols-[1fr_506px]">
           <Reveal>

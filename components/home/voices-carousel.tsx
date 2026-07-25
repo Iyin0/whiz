@@ -15,29 +15,30 @@ import { cn } from '@/lib/utils';
 
 const voices = [
   {
-    initials: 'AO',
-    name: 'Amara Okafor',
-    role: 'Program Graduate, Coding for Kids • Kogi State',
+    initials: 'BA',
+    name: 'Babatunde Akinwale',
+    role: 'ODLP 2.0 Trainee • Offa, Kwara State',
     quote:
-      'Whiz Academy changed my entire future. I came in not knowing what code even meant. Six months later, I built a mobile app that tracks crop prices for farmers in my village.',
+      'Overall, ODLP has been a very impactful and beneficial program for me, and I am grateful for the opportunity to be part of it. It has helped shape my interest in becoming a computer enthusiast and encouraged me to continue learning more about technology.',
   },
   {
     initials: 'BA',
-    name: 'Mrs. Blessing Adeyemi',
-    role: 'Teacher Training Graduate • Ekiti State',
+    name: 'Blessing Adeyemi',
+    role: 'ODLP 3.0 & 4.0 Trainee • Offa, Kwara State',
     quote:
-      'The Teacher Training program transformed how I teach. Now I run a computer lab with 40 students every week and three of my students won a state-level STEM competition.',
+      'Over the past two years in the ODLP program, I have gained valuable knowledge and practical computer skills. I learned how to use some computer application packages. These skills have greatly improved my confidence in using computers and have made me more interested in technology.',
   },
   {
-    initials: 'FA',
-    name: 'Fatima Al-Hassan',
-    role: 'Women in Tech Alumna • Kano State',
+    initials: 'AM',
+    name: 'Aisha Mariam',
+    role: 'ODLP 4.0 Trainee • Offa, Kwara State',
     quote:
-      'I was told tech was not for women. Whiz Academy proved otherwise. I now freelance as a UI designer and earn more than I ever imagined from a rural background.',
+      'The program has been very helpful in developing my digital skills and exposing me to tools that are useful for education and future career opportunities. Attending the program twice has also allowed me to practice more and understand the applications better.',
   },
 ];
 
 const SWIPE_THRESHOLD = 48;
+const INITIAL_AUTO_ADVANCE_DELAY = 2800;
 const AUTO_ADVANCE_DELAY = 6000;
 
 export default function VoicesCarousel() {
@@ -52,6 +53,7 @@ export default function VoicesCarousel() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const pointerStartY = useRef<number | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
+  const hasCompletedFirstAdvance = useRef(false);
 
   const canAutoAdvance =
     isInViewport &&
@@ -94,14 +96,16 @@ export default function VoicesCarousel() {
     if (!canAutoAdvance) return;
 
     const timeout = window.setTimeout(() => {
+      hasCompletedFirstAdvance.current = true;
       setDirection('next');
       setActiveIndex((currentIndex) => (currentIndex + 1) % voices.length);
-    }, AUTO_ADVANCE_DELAY);
+    }, hasCompletedFirstAdvance.current ? AUTO_ADVANCE_DELAY : INITIAL_AUTO_ADVANCE_DELAY);
 
     return () => window.clearTimeout(timeout);
   }, [activeIndex, canAutoAdvance]);
 
   const showSlide = (index: number, nextDirection: 'next' | 'previous') => {
+    hasCompletedFirstAdvance.current = true;
     setDirection(nextDirection);
     setActiveIndex((index + voices.length) % voices.length);
   };
@@ -159,8 +163,6 @@ export default function VoicesCarousel() {
   return (
     <section
       ref={sectionRef}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onFocusCapture={() => setIsFocusedWithin(true)}
       onBlurCapture={handleBlurCapture}
       className="bg-[linear-gradient(149deg,#0d1117_0%,#0d2320_100%)] py-20 text-white sm:py-24"
@@ -186,6 +188,8 @@ export default function VoicesCarousel() {
             aria-label="Community stories"
             aria-describedby="voices-instructions"
             tabIndex={0}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             onKeyDown={(event) => {
               if (event.key === 'ArrowUp' || event.key === 'ArrowRight') {
                 event.preventDefault();

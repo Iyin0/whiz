@@ -94,6 +94,8 @@ export default function ProgramsPage() {
         eyebrow="Programme & Project Portfolio"
         title="Our Programmes & Projects"
         description="Six interconnected programmes, each anchored by ongoing projects and a pipeline of future initiatives designed to transform digital access across rural Nigeria."
+        imageSrc="/images/programs_hero.jpg"
+        className="bg-[linear-gradient(157deg,#0d1117_0%,#0d2320_100%)]"
       />
 
       <nav aria-label="Programme status" className="sticky top-16 z-30 border-b border-black/[0.08] bg-white/95 backdrop-blur-md dark:border-white/10 dark:bg-[#0d1117]/95">

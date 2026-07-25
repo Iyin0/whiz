@@ -41,7 +41,8 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         eyebrow="Contact Us"
         title="Let's build something together"
         description="Whether you want to volunteer, partner, donate equipment, or bring our programs to your community, we'd love to hear from you."
-        className="bg-[linear-gradient(145deg,#0c1219_0%,#0a211f_100%)]"
+        imageSrc="/images/contact_hero.jpg"
+        className="bg-[linear-gradient(157deg,#0d1117_0%,#0d2320_100%)]"
       />
 
       <section className="px-6 py-20 sm:py-24">

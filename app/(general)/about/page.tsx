@@ -38,28 +38,32 @@ const values = [
 
 const leaders = [
   {
-    name: 'Dr. Tunde Adewale',
-    role: 'Executive Director',
-    bio: 'Former Google Africa lead with 15 years in digital education and NGO leadership.',
-    image: '/images/about_tunde.jpg',
+    name: 'Mary Ebietomiye',
+    role: 'Managing Director',
+    bio: 'Oversees organisational growth, partnerships, governance, and long-term impact.',
+    image: '/images/about_mary.jpg',
+    imagePosition: '50% 40%',
   },
   {
-    name: 'Ngozi Obi-Eze',
-    role: 'Director of Programs',
-    bio: 'Curriculum designer and pedagogy expert. Former UNICEF education advisor.',
-    image: '/images/about_ngozi.jpg',
+    name: 'Ifeoluwa Bilewu',
+    role: 'People & Culture Lead',
+    bio: 'Building an inclusive, high-performing team by leading recruitment, volunteer engagement, and so on.',
+    image: '/images/about_ifeoluwa.jpg',
+    imagePosition: 'center',
   },
   {
-    name: 'Ibrahim Yusuf',
-    role: 'Director of Partnerships',
-    bio: 'Corporate development specialist who has secured over $4M in funding.',
-    image: '/images/about_ibrahim.jpg',
+    name: 'Michael Bamikale',
+    role: 'Strategic Advisor',
+    bio: 'Offering expert guidance to help maximise long-term community impact.',
+    image: '/images/about_michael.jpg',
+    imagePosition: 'center',
   },
   {
-    name: 'Chioma Nwosu',
-    role: 'Head of Community Impact',
-    bio: 'Community organizer with deep roots in rural development and grassroots mobilization.',
-    image: '/images/about_chioma.jpg',
+    name: 'Moyinoluwa Adeyemo',
+    role: 'Programme & Projects Manager',
+    bio: "Leading the planning and delivery of Whiz Academy's programmes and projects",
+    image: '/images/about_moyinoluwa.jpg',
+    imagePosition: 'center',
   },
 ];
 
@@ -126,8 +130,15 @@ export default function AboutPage() {
             {leaders.map((leader, index) => (
               <Reveal key={leader.name} delay={index * 80}>
                 <article className="group overflow-hidden rounded-2xl border border-black/[0.08] bg-[#f8fafb] transition-all duration-300 hover:-translate-y-1.5 hover:border-[#04af9f]/30 hover:shadow-[0_18px_45px_rgba(13,17,23,0.1)] dark:border-white/10 dark:bg-[#141d20] dark:hover:border-[#04af9f]/40">
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image src={leader.image} alt={leader.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    <Image
+                      src={leader.image}
+                      alt={leader.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{ objectPosition: leader.imagePosition }}
+                    />
                   </div>
                   <div className="p-5">
                     <h3 className="font-jakarta text-lg font-extrabold">{leader.name}</h3>

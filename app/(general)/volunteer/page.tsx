@@ -70,11 +70,11 @@ export default function VolunteerPage() {
 
       <section className="bg-[#f8fafb] py-20 transition-colors duration-300 dark:bg-[#11181b] sm:py-24">
         <div className="mx-auto grid max-w-[980px] items-center gap-10 px-6 lg:grid-cols-[420px_1fr]">
-          <Reveal direction="left"><div className="relative aspect-[3/2] overflow-hidden rounded-3xl"><Image src="/images/volunteer_instructor.jpg" alt="Volunteer instructor supporting a learner" fill sizes="(max-width: 1024px) 100vw, 420px" className="object-cover" /></div></Reveal>
+          <Reveal direction="left"><div className="relative aspect-[3/2] overflow-hidden rounded-3xl"><Image src="/images/volunteer_instructor.jpg" alt="A volunteer instructor leading a computer-lab training session" fill sizes="(max-width: 1024px) 100vw, 420px" className="object-cover" /></div></Reveal>
           <Reveal direction="right">
             <span className="font-jakarta text-6xl leading-none text-[#04af9f]">“</span>
-            <blockquote className="-mt-3 font-jakarta text-xl font-medium italic leading-[1.55] sm:text-2xl">I gave 3 months as a volunteer instructor. What I got back, in gratitude, in purpose, in connections, was worth a decade of corporate work.</blockquote>
-            <div className="mt-6 flex items-center gap-3"><span className="flex size-10 items-center justify-center rounded-full bg-[#04af9f] text-sm font-bold text-white">AJ</span><div><p className="font-semibold">Adaeze Jude</p><p className="mt-1 text-sm text-[#6b7280] dark:text-white/55">Software Engineer · Former Volunteer Instructor, Lagos</p></div></div>
+            <blockquote className="-mt-3 font-jakarta text-xl font-medium italic leading-[1.55] sm:text-2xl">I gave 2 weeks as a volunteer instructor. What I got back, in gratitude, in purpose, in connections, was worth a year of corporate work.</blockquote>
+            <div className="mt-6 flex items-center gap-3"><span className="flex size-10 items-center justify-center rounded-full bg-[#04af9f] text-sm font-bold text-white">AK</span><div><p className="font-semibold">Ayeni Komolafe</p><p className="mt-1 text-sm text-[#6b7280] dark:text-white/55">School Teacher · Former Volunteer Instructor, Offa, Kwara State.</p></div></div>
           </Reveal>
         </div>
       </section>

@@ -191,7 +191,7 @@ export default function Home() {
             <div className="group relative aspect-[1.3229] overflow-hidden rounded-3xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]">
               <Image
                 src="/images/who_we_are.jpg"
-                alt="A student developing digital skills"
+                alt="A student practising digital skills in a computer lab"
                 fill
                 sizes="(min-width: 1024px) 45vw, 100vw"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
