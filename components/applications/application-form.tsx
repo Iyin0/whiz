@@ -46,6 +46,10 @@ type ApplicationFormProps = {
 const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).length;
 const minStatementWords = 50;
 const maxStatementWords = 300;
+const inputClassName =
+  'h-12 rounded-xl border-black/[0.08] bg-white px-4 shadow-none transition-colors focus-visible:border-[#04af9f] focus-visible:ring-[#04af9f]/20 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/30';
+const textareaClassName =
+  'rounded-xl border-black/[0.08] bg-white px-4 py-3 shadow-none transition-colors focus-visible:border-[#04af9f] focus-visible:ring-[#04af9f]/20 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/30';
 
 function buildApplicationSchema(postings: ApplicationPosting[]) {
   const cvRequiredPostingIds = postings
@@ -197,7 +201,7 @@ export default function ApplicationForm({
 
   if (!hasCheckedWindow) {
     return (
-      <div className="rounded-lg border bg-white p-5 text-sm text-muted-foreground">
+      <div className="rounded-2xl border border-black/[0.08] bg-white p-5 text-sm text-[#6b7280] dark:border-white/10 dark:bg-white/[0.04] dark:text-white/60">
         Checking application window...
       </div>
     );
@@ -205,9 +209,9 @@ export default function ApplicationForm({
 
   if (isExpired) {
     return (
-      <div className="rounded-lg border bg-white p-6">
-        <h3 className="text-lg font-semibold text-foreground">Applications are closed</h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+      <div className="rounded-2xl border border-black/[0.08] bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]">
+        <h3 className="font-jakarta text-lg font-extrabold">Applications are closed</h3>
+        <p className="mt-2 text-sm leading-6 text-[#6b7280] dark:text-white/60">
           The application deadline for this cycle was {deadline}. Please check back for future opportunities.
         </p>
       </div>
@@ -216,7 +220,7 @@ export default function ApplicationForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-6">
         <div className="grid gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
@@ -226,7 +230,7 @@ export default function ApplicationForm({
                 <FormLabel>Role</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="h-12 rounded-md bg-white">
+                    <SelectTrigger className={inputClassName}>
                       <SelectValue placeholder="Choose a role" />
                     </SelectTrigger>
                   </FormControl>
@@ -254,7 +258,7 @@ export default function ApplicationForm({
                 <FormLabel>Availability</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="h-12 rounded-md bg-white">
+                    <SelectTrigger className={inputClassName}>
                       <SelectValue placeholder="Choose availability" />
                     </SelectTrigger>
                   </FormControl>
@@ -280,7 +284,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>First name</FormLabel>
                 <FormControl>
-                  <Input className="h-12 rounded-md bg-white" {...field} />
+                  <Input className={inputClassName} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -294,7 +298,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>Last name</FormLabel>
                 <FormControl>
-                  <Input className="h-12 rounded-md bg-white" {...field} />
+                  <Input className={inputClassName} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -310,7 +314,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" className="h-12 rounded-md bg-white" {...field} />
+                  <Input type="email" className={inputClassName} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -324,7 +328,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <Input className="h-12 rounded-md bg-white" placeholder="+234..." {...field} />
+                  <Input className={inputClassName} placeholder="+234..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -340,7 +344,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>Current location</FormLabel>
                 <FormControl>
-                  <Input className="h-12 rounded-md bg-white" placeholder="City, state, country" {...field} />
+                  <Input className={inputClassName} placeholder="City, state, country" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -355,7 +359,7 @@ export default function ApplicationForm({
                 <FormLabel>Weekly hours</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
-                    <SelectTrigger className="h-12 rounded-md bg-white">
+                    <SelectTrigger className={inputClassName}>
                       <SelectValue placeholder="Choose hours" />
                     </SelectTrigger>
                   </FormControl>
@@ -380,7 +384,7 @@ export default function ApplicationForm({
               <FormLabel>Relevant experience</FormLabel>
               <FormControl>
                 <Textarea
-                  className="min-h-28 rounded-md bg-white"
+                  className={`min-h-28 ${textareaClassName}`}
                   placeholder="Teaching, facilitation, technology, youth work, media, administration, or community experience"
                   {...field}
                 />
@@ -401,7 +405,7 @@ export default function ApplicationForm({
               </div>
               <FormControl>
                 <Textarea
-                  className="min-h-40 rounded-md bg-white"
+                  className={`min-h-40 ${textareaClassName}`}
                   placeholder="Tell us why you would like to join Whiz Academy"
                   {...field}
                 />
@@ -419,7 +423,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>CV or resume link</FormLabel>
                 <FormControl>
-                  <Input className="h-12 rounded-md bg-white" placeholder="https://..." {...field} />
+                  <Input className={inputClassName} placeholder="https://..." {...field} />
                 </FormControl>
                 <p className="text-xs text-muted-foreground">Required for paid roles. Use a shareable Google Drive, Dropbox, or portfolio link.</p>
                 <FormMessage />
@@ -434,7 +438,7 @@ export default function ApplicationForm({
               <FormItem>
                 <FormLabel>Portfolio or work sample link</FormLabel>
                 <FormControl>
-                  <Input className="h-12 rounded-md bg-white" placeholder="https://..." {...field} />
+                  <Input className={inputClassName} placeholder="https://..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -442,7 +446,7 @@ export default function ApplicationForm({
           />
         </div>
 
-        <div className="grid gap-4 rounded-lg border bg-white p-4">
+        <div className="grid gap-5 rounded-2xl border border-black/[0.08] bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
           <FormField
             control={form.control}
             name="safeguardingAgreement"
@@ -488,7 +492,11 @@ export default function ApplicationForm({
           />
         </div>
 
-        <Button type="submit" className="h-12 w-fit rounded-md px-6 text-sm font-semibold" disabled={isLoading}>
+        <Button
+          type="submit"
+          className="h-12 w-full rounded-xl bg-[#04af9f] px-6 text-sm font-bold text-white shadow-none hover:bg-[#039b8d] active:bg-[#028579] sm:w-fit"
+          disabled={isLoading}
+        >
           {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
           {isLoading ? 'Submitting...' : 'Submit application'}
         </Button>

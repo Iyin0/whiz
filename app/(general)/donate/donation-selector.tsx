@@ -1,13 +1,19 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowRight, CheckCircle2, ShieldCheck } from 'lucide-react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { z } from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Loader2,
+  LockKeyhole,
+  ShieldCheck,
+} from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -15,107 +21,147 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { cn } from '@/lib/utils';
-
-const amountOptions = [25, 50, 100, 250, 500, 1000];
-
-const impactByAmount: Record<number, string> = {
-  25: 'provides digital tools for one student for a week.',
-  50: 'funds one week of internet access for a community hub.',
-  100: 'trains one teacher in digital pedagogy.',
-  250: 'sponsors a student through Digital Literacy.',
-  500: 'equips a classroom with hardware for one program.',
-  1000: 'funds an entire program cohort for one community.',
-};
-
-const projectOptions = [
-  'Where it is needed most',
-  'Community Digital Literacy Programme',
-  'School Digital Education Programme',
-  'Community Technology Access Programme',
-];
+} from "@/components/ui/select";
+import {
+  DEFAULT_DONATION_AMOUNT,
+  DONATION_PRESETS,
+  DONATION_PROJECT_OPTIONS,
+} from "@/lib/donation-options";
+import { cn } from "@/lib/utils";
 
 const donationSchema = z.object({
-  frequency: z.enum(['one-time', 'monthly']),
-  amount: z.number().positive('Enter a donation amount greater than zero.'),
+  frequency: z.enum(["one-time", "monthly"]),
+  amount: z.number().min(100, "Enter a donation amount of at least ₦100."),
   customAmount: z.string(),
-  project: z.string().min(1),
-  fullName: z.string().trim().min(2, 'Enter your full name.'),
-  email: z.string().trim().email('Enter a valid email address.'),
-  cardNumber: z
-    .string()
-    .refine(
-      (value) => value.replace(/\s/g, '').length >= 12,
-      'Enter a valid card number.',
-    ),
+  project: z.union([z.literal(""), z.enum(DONATION_PROJECT_OPTIONS)]),
+  fullName: z.string().trim().min(2, "Enter your full name."),
+  email: z.string().trim().email("Enter a valid email address."),
 });
 
 type DonationValues = z.infer<typeof donationSchema>;
 
 function getImpact(amount: number) {
-  const exactImpact = impactByAmount[amount];
-  if (exactImpact) return exactImpact;
-  if (amount >= 1000) return impactByAmount[1000];
-  if (amount >= 500) return impactByAmount[500];
-  if (amount >= 250) return impactByAmount[250];
-  if (amount >= 100) return impactByAmount[100];
-  if (amount >= 50) return impactByAmount[50];
-  if (amount >= 25) return impactByAmount[25];
-  return 'helps expand practical digital learning in rural communities.';
+  const matchingPreset = [...DONATION_PRESETS]
+    .reverse()
+    .find((preset) => amount >= preset.amount);
+
+  if (matchingPreset) return `${matchingPreset.impact}.`;
+  return "helps expand practical digital learning in rural communities.";
 }
 
-function formatAmount(amount: number) {
-  return amount.toLocaleString('en-US', { maximumFractionDigits: 2 });
+function formatAmount(amount: number, currency: string) {
+  return new Intl.NumberFormat(currency === "NGN" ? "en-NG" : "en-US", {
+    style: "currency",
+    currency,
+    minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).format(amount);
 }
 
-export default function DonationSelector() {
+function getCurrencySymbol(currency: string) {
+  return (
+    new Intl.NumberFormat(currency === "NGN" ? "en-NG" : "en-US", {
+      style: "currency",
+      currency,
+      currencyDisplay: "narrowSymbol",
+    })
+      .formatToParts(0)
+      .find((part) => part.type === "currency")?.value || currency
+  );
+}
+
+export default function DonationSelector({ currency }: { currency: string }) {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const form = useForm<DonationValues>({
     resolver: zodResolver(donationSchema),
     defaultValues: {
-      frequency: 'one-time',
-      amount: 100,
-      customAmount: '',
-      project: projectOptions[0],
-      fullName: '',
-      email: '',
-      cardNumber: '',
+      frequency: "one-time",
+      amount: DEFAULT_DONATION_AMOUNT,
+      customAmount: "",
+      project: "",
+      fullName: "",
+      email: "",
     },
   });
 
-  const frequency = form.watch('frequency');
-  const amount = form.watch('amount');
-  const customAmount = form.watch('customAmount');
+  const frequency = form.watch("frequency");
+  const amount = form.watch("amount");
+  const customAmount = form.watch("customAmount");
 
   const chooseAmount = (nextAmount: number) => {
-    form.setValue('amount', nextAmount, { shouldDirty: true, shouldValidate: true });
-    form.setValue('customAmount', '', { shouldDirty: true });
+    form.setValue("amount", nextAmount, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    form.setValue("customAmount", "", { shouldDirty: true });
+  };
+
+  const chooseFrequency = (nextFrequency: "one-time" | "monthly") => {
+    form.setValue("frequency", nextFrequency, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
+    if (nextFrequency === "monthly") {
+      const selectedPreset = DONATION_PRESETS.find(
+        (preset) => preset.amount === amount,
+      );
+
+      chooseAmount(selectedPreset?.amount ?? DEFAULT_DONATION_AMOUNT);
+    }
   };
 
   const openPaymentForm = async () => {
     const selectionIsValid = await form.trigger([
-      'frequency',
-      'amount',
-      'project',
+      "frequency",
+      "amount",
+      "project",
     ]);
 
     if (selectionIsValid) setShowPaymentForm(true);
   };
 
-  const submitDonation = () => {
-    toast.info('Payment processing is not connected yet.', {
-      description:
-        'Your details have not been sent. A secure payment provider will be added before donations go live.',
-    });
+  const submitDonation = async (values: DonationValues) => {
+    try {
+      const response = await fetch("/api/donations/initialize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          frequency: values.frequency,
+          amount: values.amount,
+          project: values.project,
+          fullName: values.fullName,
+          email: values.email,
+        }),
+      });
+      const result = (await response.json()) as {
+        authorizationUrl?: string;
+        error?: string;
+      };
+
+      if (!response.ok || !result.authorizationUrl) {
+        throw new Error(
+          result.error || "Secure checkout could not be started.",
+        );
+      }
+
+      window.location.assign(result.authorizationUrl);
+    } catch (error) {
+      toast.error("Could not open secure checkout", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "Please try again in a moment.",
+      });
+    }
   };
 
   return (
@@ -125,29 +171,29 @@ export default function DonationSelector() {
           <FormField
             control={form.control}
             name="frequency"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel className="sr-only">Donation frequency</FormLabel>
                 <FormControl>
                   <div className="flex gap-3" aria-label="Donation frequency">
-                    {(['one-time', 'monthly'] as const).map((option) => {
+                    {(["one-time", "monthly"] as const).map((option) => {
                       const isActive = frequency === option;
 
                       return (
                         <Button
                           key={option}
                           type="button"
-                          variant={isActive ? 'default' : 'outline'}
+                          variant={isActive ? "default" : "outline"}
                           aria-pressed={isActive}
-                          onClick={() => field.onChange(option)}
+                          onClick={() => chooseFrequency(option)}
                           className={cn(
-                            'h-[42px] rounded-2xl px-5 text-sm font-semibold capitalize shadow-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#04af9f]/40',
+                            "h-[42px] rounded-2xl px-5 text-sm font-semibold capitalize shadow-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#04af9f]/40",
                             isActive
-                              ? 'border border-[#04af9f] bg-[#04af9f] text-white hover:bg-[#039b8d] hover:text-white hover:shadow-[0_8px_20px_rgba(4,175,159,0.18)]'
-                              : 'border-black/[0.08] bg-transparent text-[#6b7280] hover:border-[#04af9f]/35 hover:bg-transparent hover:text-[#04af9f] dark:border-white/10 dark:text-white/60 dark:hover:border-[#04af9f]/45 dark:hover:bg-transparent dark:hover:text-[#04af9f]',
+                              ? "border border-[#04af9f] bg-[#04af9f] text-white hover:bg-[#039b8d] hover:text-white hover:shadow-[0_8px_20px_rgba(4,175,159,0.18)]"
+                              : "border-black/[0.08] bg-transparent text-[#6b7280] hover:border-[#04af9f]/35 hover:bg-transparent hover:text-[#04af9f] dark:border-white/10 dark:text-white/60 dark:hover:border-[#04af9f]/45 dark:hover:bg-transparent dark:hover:text-[#04af9f]",
                           )}
                         >
-                          {option === 'one-time' ? 'One-Time' : 'Monthly'}
+                          {option === "one-time" ? "One-time" : "Monthly"}
                         </Button>
                       );
                     })}
@@ -164,25 +210,30 @@ export default function DonationSelector() {
               <FormItem className="mt-8">
                 <FormLabel className="sr-only">Choose an amount</FormLabel>
                 <FormControl>
-                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-6" aria-label="Choose an amount">
-                    {amountOptions.map((option) => {
-                      const isActive = customAmount === '' && amount === option;
+                  <div
+                    className="grid grid-cols-3 gap-2 sm:grid-cols-6"
+                    aria-label="Choose an amount"
+                  >
+                    {DONATION_PRESETS.map((option) => {
+                      const isActive =
+                        customAmount === "" && amount === option.amount;
 
                       return (
                         <Button
-                          key={option}
+                          key={option.amount}
                           type="button"
-                          variant={isActive ? 'default' : 'outline'}
+                          variant={isActive ? "default" : "outline"}
                           aria-pressed={isActive}
-                          onClick={() => chooseAmount(option)}
+                          aria-label={`Donate ${formatAmount(option.amount, currency)}`}
+                          onClick={() => chooseAmount(option.amount)}
                           className={cn(
-                            'h-[46px] rounded-2xl px-1 text-sm font-bold shadow-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#04af9f]/40',
+                            "h-[46px] rounded-2xl px-1 text-sm font-bold shadow-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#04af9f]/40",
                             isActive
-                              ? 'border border-[#04af9f] bg-[#04af9f] text-white hover:bg-[#039b8d] hover:text-white hover:shadow-[0_8px_20px_rgba(4,175,159,0.16)]'
-                              : 'border-black/[0.08] bg-transparent text-[#0d1117] hover:-translate-y-0.5 hover:border-[#04af9f]/35 hover:bg-transparent dark:border-white/10 dark:text-white dark:hover:border-[#04af9f]/45 dark:hover:bg-transparent',
+                              ? "border border-[#04af9f] bg-[#04af9f] text-white hover:bg-[#039b8d] hover:text-white hover:shadow-[0_8px_20px_rgba(4,175,159,0.16)]"
+                              : "border-black/[0.08] bg-transparent text-[#0d1117] hover:-translate-y-0.5 hover:border-[#04af9f]/35 hover:bg-transparent dark:border-white/10 dark:text-white dark:hover:border-[#04af9f]/45 dark:hover:bg-transparent",
                           )}
                         >
-                          ${formatAmount(option)}
+                          {option.compactLabel}
                         </Button>
                       );
                     })}
@@ -193,45 +244,55 @@ export default function DonationSelector() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="customAmount"
-            render={({ field }) => (
-              <FormItem className="relative mt-4 space-y-0">
-                <FormLabel className="sr-only">Custom donation amount</FormLabel>
-                <span className="pointer-events-none absolute inset-y-0 left-4 z-10 flex items-center text-base font-semibold text-[#6b7280] dark:text-white/50">
-                  $
-                </span>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min="1"
-                    step="1"
-                    inputMode="decimal"
-                    placeholder="Custom amount"
-                    {...field}
-                    onChange={(event) => {
-                      const nextValue = event.target.value;
-                      const parsedAmount = Number(nextValue);
+          {frequency === "one-time" ? (
+            <FormField
+              control={form.control}
+              name="customAmount"
+              render={({ field }) => (
+                <FormItem className="relative mt-4 space-y-0">
+                  <FormLabel className="sr-only">
+                    Custom donation amount
+                  </FormLabel>
+                  <span className="pointer-events-none absolute inset-y-0 left-4 z-10 flex items-center text-base font-semibold text-[#6b7280] dark:text-white/50">
+                    {getCurrencySymbol(currency)}
+                  </span>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="100"
+                      step="1"
+                      inputMode="decimal"
+                      placeholder="Custom amount"
+                      {...field}
+                      onChange={(event) => {
+                        const nextValue = event.target.value;
+                        const parsedAmount = Number(nextValue);
 
-                      field.onChange(nextValue);
-                      form.setValue(
-                        'amount',
-                        Number.isFinite(parsedAmount) && parsedAmount > 0 ? parsedAmount : 0,
-                        { shouldDirty: true, shouldValidate: true },
-                      );
-                    }}
-                    className="h-[50px] rounded-2xl border-black/[0.08] bg-[#f3f6f5] pl-8 pr-4 text-sm text-[#0d1117] shadow-none transition-all duration-300 placeholder:text-[#6b7280] hover:border-[#04af9f]/35 focus-visible:border-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-white/40"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+                        field.onChange(nextValue);
+                        form.setValue(
+                          "amount",
+                          Number.isFinite(parsedAmount) && parsedAmount > 0
+                            ? parsedAmount
+                            : 0,
+                          { shouldDirty: true, shouldValidate: true },
+                        );
+                      }}
+                      className="h-[50px] rounded-2xl border-black/[0.08] bg-[#f3f6f5] pl-8 pr-4 text-sm text-[#0d1117] shadow-none transition-all duration-300 placeholder:text-[#6b7280] hover:border-[#04af9f]/35 focus-visible:border-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-white/40"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          ) : null}
 
           <div className="mt-6 flex items-start gap-3 rounded-2xl border-l-[3px] border-[#04af9f] bg-[#04af9f]/[0.07] px-4 py-4 text-sm leading-5 text-[#0d1117] dark:bg-[#04af9f]/10 dark:text-white">
-            <CheckCircle2 aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-[#04af9f]" />
+            <CheckCircle2
+              aria-hidden="true"
+              className="mt-0.5 size-4 shrink-0 text-[#04af9f]"
+            />
             <p>
-              <strong>${formatAmount(amount)}</strong> {getImpact(amount)}
+              <strong>{formatAmount(amount, currency)}</strong>{" "}
+              {getImpact(amount)}
             </p>
           </div>
 
@@ -250,8 +311,12 @@ export default function DonationSelector() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent className="rounded-2xl border-black/[0.08] dark:border-white/10">
-                    {projectOptions.map((option) => (
-                      <SelectItem key={option} value={option} className="rounded-xl py-2.5">
+                    {DONATION_PROJECT_OPTIONS.map((option) => (
+                      <SelectItem
+                        key={option}
+                        value={option}
+                        className="rounded-xl py-2.5"
+                      >
                         {option}
                       </SelectItem>
                     ))}
@@ -307,62 +372,59 @@ export default function DonationSelector() {
                     </FormItem>
                   )}
                 />
+              </div>
 
-                <FormField
-                  control={form.control}
-                  name="cardNumber"
-                  render={({ field }) => (
-                    <FormItem className="sm:col-span-2">
-                      <FormLabel className="sr-only">Card number</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          inputMode="numeric"
-                          autoComplete="cc-number"
-                          placeholder="Card number"
-                          maxLength={19}
-                          {...field}
-                          onChange={(event) => {
-                            const digits = event.target.value
-                              .replace(/\D/g, '')
-                              .slice(0, 16);
-
-                            field.onChange(
-                              digits.replace(/(\d{4})(?=\d)/g, '$1 '),
-                            );
-                          }}
-                          className="h-[50px] rounded-2xl border-black/[0.08] bg-[#f3f6f5] px-4 text-sm text-[#0d1117] shadow-none transition-all duration-300 placeholder:text-[#6b7280] hover:border-[#04af9f]/35 focus-visible:border-[#04af9f] focus-visible:ring-2 focus-visible:ring-[#04af9f]/15 dark:border-white/10 dark:bg-white/[0.05] dark:text-white dark:placeholder:text-white/40"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+              <div className="mt-5 flex items-start gap-3 rounded-2xl border border-[#04af9f]/20 bg-[#04af9f]/[0.06] p-4 text-sm leading-5 dark:bg-[#04af9f]/10">
+                <LockKeyhole
+                  aria-hidden="true"
+                  className="mt-0.5 size-4 shrink-0 text-[#04af9f]"
                 />
+                <p>
+                  You&apos;ll enter your payment details on Paystack&apos;s
+                  secure checkout. Whiz Academy never receives or stores your
+                  card information. Your{" "}
+                  {frequency === "monthly" ? "monthly" : "one-time"} donation is{" "}
+                  <strong>{formatAmount(amount, currency)}</strong>. Paystack
+                  will calculate and add its applicable processing fee, and show
+                  the final amount before you pay.
+                </p>
               </div>
 
               <Button
                 type="submit"
-                disabled={amount <= 0}
+                disabled={amount < 100 || form.formState.isSubmitting}
                 className="mt-6 h-14 w-full rounded-2xl bg-[#04af9f] text-base font-bold text-white shadow-none transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#039b8d] hover:text-white hover:shadow-[0_14px_30px_rgba(4,175,159,0.24)] focus-visible:ring-2 focus-visible:ring-[#04af9f]/40"
               >
-                Donate ${formatAmount(amount)}
-                <ArrowRight aria-hidden="true" className="size-4" />
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2
+                      aria-hidden="true"
+                      className="size-4 animate-spin"
+                    />
+                    Opening secure checkout...
+                  </>
+                ) : (
+                  <>
+                    Donate {formatAmount(amount, currency)} with Paystack
+                    <ArrowRight aria-hidden="true" className="size-4" />
+                  </>
+                )}
               </Button>
             </div>
           ) : (
             <Button
               type="button"
-              disabled={amount <= 0}
+              disabled={amount < 100}
               onClick={openPaymentForm}
               className="mt-6 h-14 w-full rounded-2xl bg-[#04af9f] text-base font-bold text-white shadow-none transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#039b8d] hover:text-white hover:shadow-[0_14px_30px_rgba(4,175,159,0.24)] focus-visible:ring-2 focus-visible:ring-[#04af9f]/40"
             >
-              Continue, ${formatAmount(amount)}
+              Continue, {formatAmount(amount, currency)}
             </Button>
           )}
 
           <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs leading-4 text-[#6b7280] dark:text-white/50">
             <ShieldCheck aria-hidden="true" className="size-3" />
-            Secure, encrypted · Tax-deductible in eligible countries
+            Secure payment powered by Paystack
           </p>
         </form>
       </Form>

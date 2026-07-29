@@ -163,6 +163,8 @@ export async function GET() {
       'fields',
       'files(id, name, mimeType, webViewLink, webContentLink, thumbnailLink)'
     );
+    url.searchParams.set('pageSize', '1000');
+    url.searchParams.set('orderBy', 'name');
 
     const response = await fetch(url.toString(), {
       headers: {
@@ -181,17 +183,25 @@ export async function GET() {
     };
 
     const images =
-      data.files?.map((file) => ({
-        id: file.id,
-        name: file.name,
-        mimeType: file.mimeType,
-        url: `https://drive.google.com/uc?id=${file.id}`,
-        webViewLink: file.webViewLink,
-        webContentLink: file.webContentLink,
-        thumbnailLink: file.thumbnailLink,
-      })) ?? [];
+      data.files?.map((file) => {
+        const thumbnailUrl = file.thumbnailLink?.replace(/=s\d+$/, '=s640');
+        const displayUrl = file.thumbnailLink?.replace(/=s\d+$/, '=s1600');
 
-    return NextResponse.json({ images });
+        return {
+          id: file.id,
+          name: file.name,
+          mimeType: file.mimeType,
+          url: displayUrl ?? file.webContentLink ?? `https://drive.google.com/uc?id=${file.id}`,
+          thumbnailUrl: thumbnailUrl ?? displayUrl ?? file.webContentLink,
+          webViewLink: file.webViewLink,
+          webContentLink: file.webContentLink,
+        };
+      }) ?? [];
+
+    return NextResponse.json({
+      images,
+      folderUrl: `https://drive.google.com/drive/folders/${folderId}`,
+    });
   } catch (error) {
 
     return NextResponse.json(

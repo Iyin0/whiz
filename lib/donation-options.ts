@@ -1,0 +1,82 @@
+export const DONATION_PRESETS = [
+  {
+    amount: 35_000,
+    compactLabel: "₦35K",
+    usdEquivalent: 25,
+    impact: "Give one learner access to digital skills training.",
+  },
+  {
+    amount: 70_000,
+    compactLabel: "₦70K",
+    usdEquivalent: 50,
+    impact: "Keep a community learning hub connected for one week.",
+  },
+  {
+    amount: 140_000,
+    compactLabel: "₦140K",
+    usdEquivalent: 100,
+    impact: "Train one teacher or community digital mentor.",
+  },
+  {
+    amount: 350_000,
+    compactLabel: "₦350K",
+    usdEquivalent: 250,
+    impact: "Sponsor two learners through our Digital Literacy Bootcamp.",
+  },
+  {
+    amount: 690_000,
+    compactLabel: "₦690K",
+    usdEquivalent: 500,
+    impact: "Purchase two refurbished laptops for rural learners.",
+  },
+  {
+    amount: 1_400_000,
+    compactLabel: "₦1.4M",
+    usdEquivalent: 1_000,
+    impact:
+      "Helps fund an entire programme cohort in an underserved community.",
+  },
+] as const;
+
+export const DEFAULT_DONATION_AMOUNT = 140_000;
+export const MAX_DONATION_AMOUNT = 1_400_000;
+
+export const DONATION_PROJECT_OPTIONS = [
+  "Offa Digital Literacy Programme (ODLP)",
+  "Rural Community Digital Literacy Outreach Programme",
+  "Adult Digital Literacy Programme",
+  "Girls in Digital Skills Initiative",
+  "Senior Citizens Digital Literacy Programme",
+  "Inclusive Digital Literacy Programme for Persons with Disabilities",
+  "Whiz Club (School Digital Clubs)",
+  "School Digital Innovation Challenge",
+  "Student Tech Ambassador Programme",
+  "Digital Literacy Centres",
+  "Community Digital Hubs",
+  "Device Donation Initiative",
+  "Mobile Digital Lab",
+  "Solar-Powered Digital Learning Centres",
+  "Community Innovation & Makerspace",
+  "Stay Safe Online Campaign",
+  "Online Scam Awareness Initiative",
+  "Digital Citizenship Programme",
+  "Safe Social Media Campaign",
+  "Child Online Protection Initiative",
+  "Digital Wellbeing Campaign",
+  "Community Cyber Awareness Week",
+  "Offa Digital Literacy Radio Programme",
+  "Community Digital Awareness Campaigns",
+  "School Awareness Tours",
+  "Digital Inclusion Week",
+  "Community Technology Talks",
+  "Community Digital Festivals",
+  "Rural Technology Expo",
+  "Digital Champions Recognition Awards",
+  "Train-the-Trainer Programme",
+  "Teacher Capacity Building Programme",
+  "Community Digital Champions Network",
+  "Community Leadership Development",
+  "Youth Leadership Fellowship",
+  "Volunteer Leadership Programme",
+  "Community Partnership Development Initiative",
+] as const;

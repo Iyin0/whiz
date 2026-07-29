@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Body, Container, Head, Heading, Html, Section, Text } from '@react-email/components';
+import {
+  ContentSection,
+  DetailCard,
+  DetailRow,
+  NotificationLayout,
+} from './components/notification-layout';
 
 export interface VolunteerFormEmailProps {
   fullName: string;
@@ -19,22 +24,32 @@ export default function VolunteerFormEmail({
   experience,
 }: VolunteerFormEmailProps) {
   return (
-    <Html>
-      <Head />
-      <Body style={{ fontFamily: 'Arial, sans-serif', padding: '20px', backgroundColor: '#f4f4f4' }}>
-        <Container style={{ maxWidth: '600px', backgroundColor: '#ffffff', padding: '20px', borderRadius: '5px' }}>
-          <Heading style={{ color: '#333', textAlign: 'center' }}>New Volunteer Application</Heading>
-          <Section>
-            <Text><strong>Full Name:</strong> {fullName}</Text>
-            <Text><strong>Email:</strong> {email}</Text>
-            <Text><strong>LinkedIn:</strong> {linkedIn || 'Not provided'}</Text>
-            <Text><strong>Preferred Role:</strong> {role}</Text>
-            <Text><strong>Availability:</strong> {availability}</Text>
-            <Text><strong>Skills and Motivation:</strong></Text>
-            <Text>{experience}</Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
+    <NotificationLayout
+      preview={`New volunteer application from ${fullName}`}
+      status="Volunteer application"
+      title="New volunteer application"
+      description="A new volunteer submitted their details through the Whiz Academy website."
+    >
+      <DetailCard>
+        <DetailRow label="Full name" value={fullName} />
+        <DetailRow label="Email" value={email} />
+        <DetailRow label="LinkedIn" value={linkedIn || 'Not provided'} />
+        <DetailRow label="Preferred role" value={role} />
+        <DetailRow label="Availability" value={availability} />
+      </DetailCard>
+      <ContentSection title="Skills and motivation">
+        {experience}
+      </ContentSection>
+    </NotificationLayout>
   );
 }
+
+VolunteerFormEmail.PreviewProps = {
+  fullName: 'Chidi Eze',
+  email: 'chidi@example.com',
+  linkedIn: 'https://www.linkedin.com/in/example',
+  role: 'Programme Mentor',
+  availability: 'Weekends',
+  experience:
+    'I am a software engineer with mentoring experience and would like to support young learners.',
+} satisfies VolunteerFormEmailProps;

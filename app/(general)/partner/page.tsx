@@ -231,7 +231,7 @@ export default function PartnerPage() {
             <dl className="mt-5 divide-y divide-white/10">
               {[
                 ['Rural Communities Served', '1'],
-                ['Learners Empowered', '300+'],
+    ['Learners Empowered', '500+'],
                 ['Volunteers Engaged', '10+'],
                 ['Schools Reached', '25+'],
               ].map(([label, value]) => (

@@ -41,6 +41,7 @@ const socialLinks = [
 
 const organizationLinks = [
   { label: 'About Us', href: '/about' },
+  { label: 'Careers', href: '/careers' },
   { label: 'Gallery', href: '/gallery' },
   { label: 'Contact', href: '/contact' },
 ];

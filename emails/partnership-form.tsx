@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Body, Container, Head, Heading, Html, Section, Text } from '@react-email/components';
+import {
+  ContentSection,
+  DetailCard,
+  DetailRow,
+  NotificationLayout,
+} from './components/notification-layout';
 
 export interface PartnershipFormEmailProps {
   contactName: string;
@@ -23,24 +28,40 @@ export default function PartnershipFormEmail({
   message,
 }: PartnershipFormEmailProps) {
   return (
-    <Html>
-      <Head />
-      <Body style={{ fontFamily: 'Arial, sans-serif', padding: '20px', backgroundColor: '#f4f4f4' }}>
-        <Container style={{ maxWidth: '600px', backgroundColor: '#ffffff', padding: '20px', borderRadius: '5px' }}>
-          <Heading style={{ color: '#333', textAlign: 'center' }}>New Partnership Inquiry</Heading>
-          <Section>
-            <Text><strong>Contact Name:</strong> {contactName}</Text>
-            <Text><strong>Job Title:</strong> {jobTitle || 'Not provided'}</Text>
-            <Text><strong>Organisation Name:</strong> {orgName || 'Not provided'}</Text>
-            <Text><strong>Email:</strong> {email}</Text>
-            <Text><strong>Phone:</strong> {phone}</Text>
-            <Text><strong>Partnership Types:</strong> {partnershipTypes.join(', ')}</Text>
-            <Text><strong>Website:</strong> {website || 'Not provided'}</Text>
-            <Text><strong>Goals:</strong></Text>
-            <Text>{message}</Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
+    <NotificationLayout
+      preview={`New partnership enquiry from ${orgName || contactName}`}
+      status="Partnership enquiry"
+      title="New partnership inquiry"
+      description="A prospective partner submitted an inquiry through the Whiz Academy website."
+    >
+      <DetailCard>
+        <DetailRow label="Contact name" value={contactName} />
+        <DetailRow label="Job title" value={jobTitle || 'Not provided'} />
+        <DetailRow
+          label="Organisation"
+          value={orgName || 'Not provided'}
+        />
+        <DetailRow label="Email" value={email} />
+        <DetailRow label="Phone" value={phone} />
+        <DetailRow
+          label="Partnership types"
+          value={partnershipTypes?.join(', ') || 'Not provided'}
+        />
+        <DetailRow label="Website" value={website || 'Not provided'} />
+      </DetailCard>
+      <ContentSection title="Partnership goals">{message}</ContentSection>
+    </NotificationLayout>
   );
 }
+
+PartnershipFormEmail.PreviewProps = {
+  contactName: 'Amina Bello',
+  jobTitle: 'Programme Director',
+  orgName: 'Community Learning Initiative',
+  email: 'amina@example.com',
+  phone: '+234 800 000 0000',
+  partnershipTypes: ['Programme sponsorship', 'Technology support'],
+  website: 'https://example.com',
+  message:
+    'We would like to explore supporting digital-skills training for students in our partner schools.',
+} satisfies PartnershipFormEmailProps;

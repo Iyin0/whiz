@@ -16,13 +16,13 @@ import { Button } from '@/components/ui/button';
 import { Reveal } from '@/components/ui/reveal';
 
 const heroStats = [
-  { value: '300+', label: 'Students Trained' },
+  { value: '500+', label: 'Students Trained' },
   { value: '1', label: 'Community' },
   { value: '25+', label: 'Schools' },
 ];
 
 const impactStats = [
-  { value: 300, suffix: '+', label: 'Students Trained' },
+  { value: 500, suffix: '+', label: 'Students Trained' },
   { value: 1, suffix: '', label: 'Community Reached' },
   { value: 5, suffix: '+', label: 'Volunteers' },
   { value: 25, suffix: '+', label: 'Schools Partnered' },

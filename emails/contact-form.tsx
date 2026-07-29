@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Body, Container, Head, Heading, Html, Section, Text } from '@react-email/components';
+import {
+  ContentSection,
+  DetailCard,
+  DetailRow,
+  NotificationLayout,
+} from './components/notification-layout';
 
 export interface ContactFormEmailProps {
   firstName: string;
@@ -19,22 +24,30 @@ export default function ContactFormEmail({
   message,
 }: ContactFormEmailProps) {
   return (
-    <Html>
-      <Head />
-      <Body style={{ fontFamily: 'Arial, sans-serif', padding: '20px', backgroundColor: '#f4f4f4' }}>
-        <Container style={{ maxWidth: '600px', backgroundColor: '#ffffff', padding: '20px', borderRadius: '5px' }}>
-          <Heading style={{ color: '#333', textAlign: 'center' }}>New Contact Form Submission</Heading>
-          <Section>
-            <Text><strong>First Name:</strong> {firstName}</Text>
-            <Text><strong>Last Name:</strong> {lastName}</Text>
-            <Text><strong>Email:</strong> {email}</Text>
-            <Text><strong>Phone:</strong> {phone || 'Not provided'}</Text>
-            <Text><strong>Subject:</strong> {subject}</Text>
-            <Text><strong>Message:</strong></Text>
-            <Text>{message}</Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
+    <NotificationLayout
+      preview={`New contact enquiry from ${firstName} ${lastName}`}
+      status="New enquiry"
+      title="New contact form submission"
+      description="A new message was submitted through the Whiz Academy contact page."
+    >
+      <DetailCard>
+        <DetailRow label="First name" value={firstName} />
+        <DetailRow label="Last name" value={lastName} />
+        <DetailRow label="Email" value={email} />
+        <DetailRow label="Phone" value={phone || 'Not provided'} />
+        <DetailRow label="Subject" value={subject} />
+      </DetailCard>
+      <ContentSection title="Message">{message}</ContentSection>
+    </NotificationLayout>
   );
 }
+
+ContactFormEmail.PreviewProps = {
+  firstName: 'Amara',
+  lastName: 'Okafor',
+  email: 'amara@example.com',
+  phone: '+234 800 000 0000',
+  subject: 'School partnership enquiry',
+  message:
+    'I would like to learn more about bringing a Whiz Academy programme to our community.',
+} satisfies ContactFormEmailProps;
