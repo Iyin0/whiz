@@ -153,7 +153,7 @@ export default function ProgramsPage() {
                 {index === 0 ? <p className="mb-4 text-sm font-bold text-[#6b7280] dark:text-white/60">Future Projects</p> : null}
                 <div id={index === 0 ? 'coming-soon' : undefined} className="grid scroll-mt-28 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {programme.pipeline.map((project) => (
-                    <Link key={project} href={`/contact?subject=${encodeURIComponent(project)}`} style={{ '--program-accent': programme.color } as CSSProperties} className="group rounded-xl border border-black/[0.08] bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--program-accent)] hover:shadow-[0_12px_28px_rgba(13,17,23,0.07)] dark:border-white/10 dark:bg-[#141d20] dark:hover:border-[var(--program-accent)]">
+                    <article key={project} style={{ '--program-accent': programme.color } as CSSProperties} className="group rounded-xl border border-black/[0.08] bg-white p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[var(--program-accent)] hover:shadow-[0_12px_28px_rgba(13,17,23,0.07)] dark:border-white/10 dark:bg-[#141d20] dark:hover:border-[var(--program-accent)]">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <span className="text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: programme.color }}>Coming Soon</span>
@@ -161,7 +161,7 @@ export default function ProgramsPage() {
                         </div>
                         <BookOpenCheck aria-hidden="true" className="mt-1 size-4 shrink-0 transition-transform duration-300 group-hover:scale-110" style={{ color: programme.color }} />
                       </div>
-                    </Link>
+                    </article>
                   ))}
                 </div>
               </Reveal>
