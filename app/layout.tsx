@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/sonner';
 import './globals.css';
 
 const dmSans = DM_Sans({
-  variable: '--font-sans',
+  variable: '--font-dm-sans',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
 });
@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${dmSans.variable} ${plusJakartaSans.variable} font-sans antialiased`}
+        className={`${dmSans.className} ${dmSans.variable} ${plusJakartaSans.variable} font-sans antialiased`}
       >
         <ThemeProvider
           attribute="class"

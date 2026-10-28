@@ -10,7 +10,7 @@ export default {
   theme: {
   	extend: {
 		fontFamily: {
-			sans: ['var(--font-sans)', 'sans-serif'],
+			sans: ['var(--font-dm-sans)', 'Arial', 'sans-serif'],
 			jakarta: ['var(--font-plus-jakarta-sans)', 'sans-serif']
 		},
   		colors: {
