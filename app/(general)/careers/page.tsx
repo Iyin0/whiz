@@ -29,6 +29,7 @@ import { careerMeta, careerRoles, selectionProcess, type CareerRole } from '@/li
 
 export const metadata: Metadata = {
   title: 'Careers | Whiz Academy',
+  alternates: { canonical: 'https://whizacademy.org/careers' },
   description:
     'Join Whiz Academy and help expand practical digital education across rural communities in Nigeria.',
 };

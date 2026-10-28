@@ -17,17 +17,15 @@ export default function Header() {
   const pathname = usePathname();
   const { resolvedTheme, setTheme } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
-  const [isCareersSite, setIsCareersSite] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const isHomePage = pathname === "/" && !isCareersSite;
+  const isHomePage = pathname === "/";
   const isTransparent = isHomePage && !isScrolled;
   const isDark = isMounted && resolvedTheme === "dark";
 
   useEffect(() => {
     setIsMounted(true);
-    setIsCareersSite(window.location.hostname === "careers.whizacademy.org");
   }, []);
 
   useEffect(() => {
@@ -51,8 +49,7 @@ export default function Header() {
   }, [isHomePage]);
 
   const isActiveLink = (href: string) =>
-    (href !== "/" || !isCareersSite) &&
-    (pathname === href || (href !== "/" && pathname.startsWith(href)));
+    pathname === href || (href !== "/" && pathname.startsWith(href));
 
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");

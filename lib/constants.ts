@@ -21,6 +21,10 @@ export const NAV_LINKS = [
     label: "Contact",
     href: "/contact",
   },
+  {
+    label: "Careers",
+    href: "/careers",
+  },
 ];
 
 export const contacts = [
