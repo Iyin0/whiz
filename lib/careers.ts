@@ -15,13 +15,13 @@ export type CareerRole = {
   essential: string[];
   desirable: string[];
   benefits: string[];
+  successCriteria?: string[];
+  applicationGuidance?: string;
 };
 
 export const careerMeta = {
   headline: "Join Whiz Academy's year-round learning team.",
   subheading: "Help Bridge Nigeria's Digital Divide",
-  deadline: '31 August 2026',
-  applicationClosesAt: '2026-08-31T23:59:59+01:00',
   startDate: 'October 2026',
   email: 'whizacademy4all@gmail.com',
 };
@@ -210,6 +210,91 @@ export const careerRoles: CareerRole[] = [
       'Opportunity to transition into future paid roles.',
       'Opportunity to make a lasting impact in rural communities.',
     ],
+  },
+  {
+    "id": "volunteer-social-media-manager",
+    "position": "Position 3",
+    "title": "Volunteer Social Media Manager",
+    "type": "Volunteer (unpaid)",
+    "location": "Remote",
+    "requiresCv": false,
+    "overview": [
+      "We are looking for a creative, organised Volunteer Social Media Manager to strengthen our online presence and communicate the value and impact of our work.",
+      "Whiz Academy has five years of programme resources, including photographs, videos, learning materials, and stories. You will turn these resources into relevant, engaging social media content while helping us document and share new activities.",
+      "You will also review and optimise our social media pages to improve discoverability, engagement, and connection with our target audiences: individuals, potential partners and sponsors, and government agencies."
+    ],
+    "responsibilities": [
+      {
+        "title": "Content Review and Repurposing",
+        "items": [
+          "Review and organise existing resources into a usable content archive.",
+          "Identify programme highlights, participant stories, milestones, and educational resources that can be repurposed.",
+          "Create captions, carousels, short videos, reels, and other suitable content from existing materials.",
+          "Clearly distinguish past activities from current programmes and upcoming opportunities.",
+          "Maintain accuracy, brand consistency, and appropriate permissions when using photographs, testimonials, and participant information."
+        ]
+      },
+      {
+        "title": "Content Planning and Publishing",
+        "items": [
+          "Develop and maintain a realistic content calendar.",
+          "Create a balanced mix of educational content, impact stories, programme updates, volunteer opportunities, and partnership messages.",
+          "Adapt content to the audience and format of each platform.",
+          "Schedule and publish approved content consistently.",
+          "Coordinate with the team to gather information and materials from new activities."
+        ]
+      },
+      {
+        "title": "Page Optimisation and Audience Growth",
+        "items": [
+          "Audit our social media pages and recommend improvements to profile names, biographies, descriptions, links, contact details, pinned posts, and highlights.",
+          "Ensure visitors can quickly understand our mission, programmes, impact, and how to get involved.",
+          "Use relevant keywords, hashtags, accessible captions, and platform features to support discoverability.",
+          "Develop approaches to reach learners, parents, volunteers, supporters, potential partners, sponsors, and relevant government agencies.",
+          "Make partnership and sponsorship information easy to find, with clear calls to action."
+        ]
+      },
+      {
+        "title": "Community Engagement and Reporting",
+        "items": [
+          "Respond to routine comments and messages using agreed guidance, referring sensitive enquiries and partnership discussions to the appropriate team member.",
+          "Encourage meaningful engagement and build relationships with relevant online communities.",
+          "Monitor content performance, audience growth, engagement, profile visits, and enquiries.",
+          "Provide a concise monthly report explaining what is working and what should improve."
+        ]
+      }
+    ],
+    "workingPattern": [
+      "5–10 hours per week.",
+      "Remote, with occasional programme participation where feasible."
+    ],
+    "essential": [
+      "Can demonstrate experience managing social media through professional, personal, student, community, or volunteer projects.",
+      "Writes clear, engaging captions and can turn existing resources into compelling stories.",
+      "Can use Canva or similar design tools and basic video-editing tools.",
+      "Understands content planning, page optimisation, scheduling, and social media analytics.",
+      "Is organised, dependable, receptive to feedback, and comfortable working independently.",
+      "Has an interest in education, digital inclusion, youth development, and community impact.",
+      "Exercises care when sharing content involving children and young people."
+    ],
+    "desirable": [
+      "Experience communicating nonprofit impact or reaching institutional audiences."
+    ],
+    "successCriteria": [
+      "A well-organised archive and a sustainable content calendar.",
+      "Clear, complete social media profiles that communicate our work effectively.",
+      "Consistent, engaging content that makes good use of five years of resources.",
+      "Improved reach and meaningful engagement among our priority audiences.",
+      "More relevant enquiries about programmes, volunteering, partnerships, and sponsorship.",
+      "Regular reporting that helps the team make informed content decisions."
+    ],
+    "benefits": [
+      "Practical experience in social media management and nonprofit communications.",
+      "Opportunities to build a portfolio using approved work.",
+      "Collaboration with a team working to improve access to digital education.",
+      "Recognition of your contribution and a reference based on satisfactory service."
+    ],
+    "applicationGuidance": "Include a brief statement of interest, your availability, and links or samples of social media pages, captions, designs, or videos you have worked on. Use the portfolio link field to share your samples."
   },
 ];
 

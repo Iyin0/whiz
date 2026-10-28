@@ -5,7 +5,6 @@ import {
   ArrowRight,
   BookOpenCheck,
   BriefcaseBusiness,
-  CalendarDays,
   CheckCircle2,
   Clock3,
   FileText,
@@ -42,11 +41,6 @@ const applicationPostings = careerRoles.map((role) => ({
 }));
 
 const heroFacts = [
-  {
-    icon: CalendarDays,
-    label: 'Application deadline',
-    value: careerMeta.deadline,
-  },
   {
     icon: Clock3,
     label: 'Programme start',
@@ -273,6 +267,23 @@ function RoleDetails({ role, index }: { role: CareerRole; index: number }) {
             </div>
           </Reveal>
 
+          {role.successCriteria ? (
+            <Reveal>
+              <CheckList title="What success looks like" items={role.successCriteria} accent={accent} />
+            </Reveal>
+          ) : null}
+
+          {role.applicationGuidance ? (
+            <Reveal>
+              <div className="rounded-2xl border border-black/[0.08] bg-[#f8fafb] p-6 dark:border-white/10 dark:bg-[#141d20]">
+                <h3 className="font-jakarta text-base font-extrabold">How to apply</h3>
+                <p className="mt-3 text-sm leading-6 text-[#6b7280] dark:text-white/60">
+                  {role.applicationGuidance}
+                </p>
+              </div>
+            </Reveal>
+          ) : null}
+
           <div className="grid gap-5 md:grid-cols-2">
             <Reveal direction="left">
               <CheckList title="Essential" items={role.essential} accent={accent} />
@@ -426,7 +437,7 @@ export default function CareersPage() {
           <SectionHeading
             eyebrow="Open Opportunities"
             title="Find where you can make the greatest impact"
-            description="Choose a paid teaching role or a flexible volunteer pathway. Both put your skills directly to work for learners and communities."
+            description="Choose a paid teaching role or a flexible volunteer opportunity in training, community support, or social media. Put your skills directly to work for learners and communities."
           />
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
@@ -598,7 +609,7 @@ export default function CareersPage() {
           <SectionHeading
             eyebrow="Apply"
             title="Take the next step"
-            description={`Submit your application before ${careerMeta.deadline}. We look forward to learning how your experience and motivation can strengthen our mission.`}
+            description="Submit your application. We look forward to learning how your experience and motivation can strengthen our mission."
           />
 
           <div className="mt-12 grid overflow-hidden rounded-[32px] border border-black/[0.08] bg-[#f8fafb] shadow-[0_24px_70px_rgba(13,17,23,0.08)] dark:border-white/10 dark:bg-[#141d20] lg:grid-cols-[0.65fr_1.35fr]">
@@ -648,8 +659,6 @@ export default function CareersPage() {
             <div className="p-6 sm:p-8 lg:p-10">
               <ApplicationForm
                 postings={applicationPostings}
-                deadline={careerMeta.deadline}
-                expiresAt={careerMeta.applicationClosesAt}
               />
             </div>
           </div>

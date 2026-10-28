@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { parsePhoneNumberFromString, isValidPhoneNumber } from 'libphonenumber-js';
 import { Loader2, Send } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -37,14 +37,11 @@ export type ApplicationPosting = {
 
 type ApplicationFormProps = {
   postings: ApplicationPosting[];
-  deadline: string;
-  expiresAt?: string;
   endpoint?: string;
   defaultPostingId?: string;
 };
 
 const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).length;
-const minStatementWords = 50;
 const maxStatementWords = 300;
 const inputClassName =
   'h-12 rounded-xl border-black/[0.08] bg-white px-4 shadow-none transition-colors focus-visible:border-[#04af9f] focus-visible:ring-[#04af9f]/20 dark:border-white/10 dark:bg-white/[0.04] dark:text-white dark:placeholder:text-white/30';
@@ -75,13 +72,13 @@ function buildApplicationSchema(postings: ApplicationPosting[]) {
     location: z.string().min(2, { message: 'Location is required' }),
     availability: z.string().min(1, { message: 'Choose your availability' }),
     weeklyHours: z.string().min(1, { message: 'Choose your weekly availability' }),
-    experience: z.string().min(20, { message: 'Share a short summary of your relevant experience' }),
-    statement: z.string().refine((value) => {
+    experience: z.string().trim().min(1, { message: 'Share a short summary of your relevant experience' }),
+    statement: z.string().trim().min(1, { message: 'Share your statement' }).refine((value) => {
       const words = wordCount(value);
 
-      return words >= minStatementWords && words <= maxStatementWords;
+      return words <= maxStatementWords;
     }, {
-      message: `Statement must be between ${minStatementWords} and ${maxStatementWords} words`,
+      message: `Statement must be no more than ${maxStatementWords} words`,
     }),
     cvUrl: z.string().url({ message: 'Enter a valid CV or resume link' }).optional().or(z.literal('')),
     portfolioUrl: z.string().url({ message: 'Enter a valid portfolio link' }).optional().or(z.literal('')),
@@ -106,14 +103,10 @@ type ApplicationFormValues = z.infer<ReturnType<typeof buildApplicationSchema>>;
 
 export default function ApplicationForm({
   postings,
-  deadline,
-  expiresAt,
   endpoint = '/api/applications',
   defaultPostingId,
 }: ApplicationFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [hasCheckedWindow, setHasCheckedWindow] = useState(!expiresAt);
-  const [isExpired, setIsExpired] = useState(false);
   const schema = useMemo(() => buildApplicationSchema(postings), [postings]);
   const defaultRoleId = defaultPostingId ?? postings[0]?.id ?? '';
 
@@ -139,26 +132,6 @@ export default function ApplicationForm({
 
   const selectedPosting = postings.find((posting) => posting.id === form.watch('roleId'));
   const statementWords = wordCount(form.watch('statement') ?? '');
-
-  useEffect(() => {
-    if (!expiresAt) {
-      return;
-    }
-
-    const expiresAtTime = new Date(expiresAt).getTime();
-
-    function updateApplicationWindow() {
-      setIsExpired(Date.now() > expiresAtTime);
-      setHasCheckedWindow(true);
-    }
-
-    updateApplicationWindow();
-    const interval = window.setInterval(updateApplicationWindow, 60000);
-
-    return () => {
-      window.clearInterval(interval);
-    };
-  }, [expiresAt]);
 
   async function onSubmit(values: ApplicationFormValues) {
     try {
@@ -197,25 +170,6 @@ export default function ApplicationForm({
     } finally {
       setIsLoading(false);
     }
-  }
-
-  if (!hasCheckedWindow) {
-    return (
-      <div className="rounded-2xl border border-black/[0.08] bg-white p-5 text-sm text-[#6b7280] dark:border-white/10 dark:bg-white/[0.04] dark:text-white/60">
-        Checking application window...
-      </div>
-    );
-  }
-
-  if (isExpired) {
-    return (
-      <div className="rounded-2xl border border-black/[0.08] bg-white p-6 dark:border-white/10 dark:bg-white/[0.04]">
-        <h3 className="font-jakarta text-lg font-extrabold">Applications are closed</h3>
-        <p className="mt-2 text-sm leading-6 text-[#6b7280] dark:text-white/60">
-          The application deadline for this cycle was {deadline}. Please check back for future opportunities.
-        </p>
-      </div>
-    );
   }
 
   return (
@@ -483,7 +437,7 @@ export default function ApplicationForm({
                 </FormControl>
                 <div>
                   <FormLabel className="font-normal leading-6">
-                    I consent to Whiz Academy contacting me about this application before the {deadline} deadline and during the selection process.
+                    I consent to Whiz Academy contacting me about this application and during the selection process.
                   </FormLabel>
                   <FormMessage />
                 </div>

@@ -8,7 +8,6 @@ import { careerMeta, careerRoles } from "@/lib/careers";
 
 const wordCount = (value: string) =>
   value.trim().split(/\s+/).filter(Boolean).length;
-const minStatementWords = 50;
 const maxStatementWords = 300;
 
 const applicationSchema = z.object({
@@ -20,11 +19,11 @@ const applicationSchema = z.object({
   location: z.string().min(2),
   availability: z.string().min(1),
   weeklyHours: z.string().min(1),
-  experience: z.string().min(20),
-  statement: z.string().refine((value) => {
+  experience: z.string().trim().min(1),
+  statement: z.string().trim().min(1).refine((value) => {
     const words = wordCount(value);
 
-    return words >= minStatementWords && words <= maxStatementWords;
+    return words <= maxStatementWords;
   }),
   cvUrl: z.string().url().optional().or(z.literal("")),
   portfolioUrl: z.string().url().optional().or(z.literal("")),
@@ -34,13 +33,6 @@ const applicationSchema = z.object({
 
 export async function POST(req: Request) {
   try {
-    if (Date.now() > new Date(careerMeta.applicationClosesAt).getTime()) {
-      return NextResponse.json(
-        { error: "Applications for this cycle are now closed." },
-        { status: 410 },
-      );
-    }
-
     const apiKey = process.env.RESEND_API_KEY;
 
     if (!apiKey) {
